@@ -16,9 +16,7 @@ export async function middleware(req: NextRequest) {
   if (!token) {
     const response = NextResponse.redirect(
       new URL(
-          isAdminRoute
-          ? "/sign-in"
-          : req.url,
+        isAdminRoute ? "/" : req.url,
         req.url // This will create a full URL
       )
     );
@@ -46,16 +44,14 @@ export async function middleware(req: NextRequest) {
     const userRole: string = payload.role; // Assuming 'role' is present in the token
 
     // Dynamic route protection based on user role
-    if (
-      (isAdminRoute && userRole === "admin")
-    ) {
+    if (isAdminRoute && userRole === "admin") {
       return NextResponse.next(); // Allow access based on role
     } else {
       return NextResponse.redirect(new URL("/auth/unauthorized", req.url));
     }
   } catch (error) {
     console.error("Error verifying token:", error);
-    const response = NextResponse.redirect(new URL("/sign-in", req.url));
+    const response = NextResponse.redirect(new URL("/", req.url));
     return response;
   }
 }

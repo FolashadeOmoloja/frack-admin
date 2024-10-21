@@ -16,16 +16,13 @@ type ProfileDetailsProps<T extends boolean> = {
 const ProfileDetails = <T extends boolean>({
   skillsBool,
   user,
-  skillsArr: initialSkillsArr,
+  skillsArr,
 }: ProfileDetailsProps<T>) => {
-  const [skillsArr, setSkillsArr] = useState<string[]>(initialSkillsArr);
-
+  const [deletePrompt, setDeletePrompt] = useState(false);
   return (
     <section className="basis-[70%]">
       <section
-        className={`bg-white rounded-md  ${
-          !skillsBool ? "lg:h-full" : "lg:h-[680px]"
-        } p-9 max-slg:p-7 max-sm:px-4 transition duration-500`}
+        className={`bg-white rounded-md  lg:h-full p-9 max-slg:p-7 max-sm:px-4 transition duration-500`}
       >
         {skillsBool ? (
           <section>
@@ -60,9 +57,43 @@ const ProfileDetails = <T extends boolean>({
               title={"Resume"}
               filename={(user as userObject)?.resume}
             />
-            <button className="py-4 px-6 bg-[#000080] text-white rounded-md font-semibold mt-5 btn-hover">
-              Edit Profile
-            </button>
+            <ProfileBox
+              title={"Primary Skills to offer"}
+              details={`${(user as userObject)?.skills.join(",")} `}
+            />
+            {!deletePrompt ? (
+              <div>
+                <button
+                  className="py-4 px-6 bg-red-700 text-white rounded-md font-semibold mt-14 btn-hover"
+                  onClick={() => setDeletePrompt(true)}
+                >
+                  Delete Talent Profile
+                </button>
+                <span className="text-sm mt-3 w-full text-[#000080] font-semibold  italic block">
+                  (Delete profile permanently from database)
+                </span>
+              </div>
+            ) : (
+              <div>
+                <div className="flex gap-5">
+                  <button
+                    className="py-4 px-9 bg-red-700 text-white rounded-md font-semibold mt-14 btn-hover hover:bg-red-800"
+                    onClick={() => setDeletePrompt(true)}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="py-4 px-9 bg-[#000080] text-white rounded-md font-semibold mt-14 btn-hover "
+                    onClick={() => setDeletePrompt(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <span className="text-sm mt-3 w-full text-[#000080] font-semibold  italic block">
+                  (Delete profile permanently from database)
+                </span>
+              </div>
+            )}
           </section>
         ) : (
           <section>
@@ -87,11 +118,11 @@ const ProfileDetails = <T extends boolean>({
             />
             <ProfileBox
               title={"Industry"}
-              details={`${(user as userCompanyObject)?.industry.join(",")} `}
+              details={`${(user as userCompanyObject)?.industry.join(", ")} `}
             />
             <ProfileBox title={"Work Culture"} details={user?.preference} />
-            <button className="py-4 px-6 bg-[#000080] text-white rounded-md font-semibold mt-14 btn-hover">
-              Edit Profile
+            <button className="py-4 px-6 bg-red-600 text-white rounded-md font-semibold mt-14 btn-hover">
+              Delete Company's Profile
             </button>
           </section>
         )}
