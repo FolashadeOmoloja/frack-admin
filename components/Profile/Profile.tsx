@@ -7,11 +7,9 @@ import { useRouter } from "next/navigation";
 const Profile = ({
   skillsBool,
   user,
-  skillsArr,
 }: {
   skillsBool: boolean;
   user: object;
-  skillsArr: [string];
 }) => {
   const router = useRouter();
   return (
@@ -29,11 +27,7 @@ const Profile = ({
         ) : (
           <HireLeftSection user={user as userCompanyObject} />
         )}
-        <ProfileDetails
-          skillsBool={skillsBool}
-          user={user as userObject}
-          skillsArr={skillsArr}
-        />
+        <ProfileDetails skillsBool={skillsBool} user={user as userObject} />
       </section>
     </section>
   );

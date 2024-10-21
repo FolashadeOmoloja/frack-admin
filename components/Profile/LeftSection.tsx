@@ -74,7 +74,9 @@ export const HireLeftSection = ({ user }: { user: userCompanyObject }) => {
         <span className="font-bold text-[#7C8698] mt-6">
           {user?.industry.join(",")}
         </span>
-        <span className="font-bold text-[#7C8698] mt-6">{user?.location}</span>
+        <span className="font-bold text-[#7C8698] mt-6">
+          {user?.location}, {user?.country}
+        </span>
         <div className="py-4 px-6 centered bg-[#000080] text-white rounded-md font-semibold mt-11">
           Profile status: {user?.accountStatus}
         </div>

@@ -1,15 +1,14 @@
 "use client";
 import Profile from "./Profile";
-import { useSelector } from "react-redux";
 import ClientProvider from "@/components/Client/ClientProvider";
+import { userCompanyObject } from "@/utilities/typeDefs";
 
-const HireTalentProfile = () => {
-  const { user } = useSelector((store: any) => store.auth);
+const CompanyProfile = ({ user }: { user: userCompanyObject }) => {
   return (
     <ClientProvider>
-      <Profile skillsBool={false} user={user} skillsArr={user?.skills} />
+      <Profile skillsBool={false} user={user} />
     </ClientProvider>
   );
 };
 
-export default HireTalentProfile;
+export default CompanyProfile;

@@ -1,10 +1,11 @@
 import { Column } from "react-table";
-import { userObject } from "./typeDefs";
+import { userCompanyObject, userObject } from "./typeDefs";
 import { DownloadResumeBotton } from "@/components/Elements/ProfileBox";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import CTABTN from "@/components/Elements/CTA-Button";
 import { setTalent } from "@/redux/slices/talentSlice";
+import { setCompany } from "@/redux/slices/companySlice";
 
 export const talentsColumn: Column<userObject>[] = [
   {
@@ -92,6 +93,103 @@ export const talentsColumn: Column<userObject>[] = [
       const ManageProfile = (idx: any, data: any) => {
         dispatch(setTalent(data));
         router.push(`/control-room/manage-talents/${idx}`);
+      };
+
+      return (
+        <CTABTN
+          route={``}
+          isFunc
+          func={() => ManageProfile(row.index, row.original)}
+          CTA="Manage"
+          height2="h-[50px] text-sm"
+          backGround="bg-[#22CCED]"
+        />
+      );
+    },
+  },
+];
+
+export const companyColumn: Column<userCompanyObject>[] = [
+  {
+    Header: "",
+    accessor: "firstName",
+    Cell: ({ row }: { row: { original: userCompanyObject } }) => {
+      return (
+        <div className="flex flex-col gap-4 ">
+          <span className="max-slg:text-lg">{row.original.companyName}</span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "profileImage",
+    Cell: ({ row }: { row: { original: userCompanyObject } }) => {
+      return (
+        <div className="p-7">
+          <div
+            className="h-[60px] w-[50px] rounded-full overflow-hidden "
+            style={{ width: "50px", height: "50px" }}
+          >
+            {row.original.profileImage ? (
+              <img
+                src={row.original.profileImage}
+                alt=""
+                className="object-center"
+              />
+            ) : (
+              <section
+                className={`w-[50px] h-[50px]  text-xl text-white  font-bold centered`}
+                style={{ background: row.original.hex }}
+              >
+                {row.original.companyName[0]}
+              </section>
+            )}
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "emailAddress",
+    Cell: ({ row }: { row: { original: userCompanyObject } }) => {
+      return (
+        <div className="flex flex-col gap-4 ">
+          <span>{row.original.emailAddress}</span>
+          <span>{row.original.linkedInUrl}</span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "industry",
+    Cell: ({ row }: { row: { original: userCompanyObject } }) => {
+      return (
+        <div className="flex flex-col gap-4 w-[200px]">
+          <span>{row.original.industry.join(", ")}</span>
+          <span>
+            {row.original.location}
+            {",  "} {row.original.country}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "accountStatus",
+    Cell: ({
+      row,
+    }: {
+      row: { index: number; original: userCompanyObject };
+    }) => {
+      const dispatch = useDispatch();
+      const router = useRouter();
+      const ManageProfile = (idx: any, data: any) => {
+        dispatch(setCompany(data));
+        router.push(`/control-room/manage-companies/${idx}`);
       };
 
       return (

@@ -159,3 +159,45 @@ export const useDeleteTalentProfile = () => {
     loading,
   };
 };
+
+export const useDeleteCompanyProfile = () => {
+  const { loading } = useSelector((store: any) => store.auth);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const onSubmit = async (id: any) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await axios.delete(
+        `${ADMIN_API_END_POINT}/delete-company/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      const { success, message } = response.data;
+
+      if (success) {
+        router.push("/control-room/manage-companies");
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "An unknown error occurred.";
+      toast.error(errorMessage);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  return {
+    onSubmit,
+    loading,
+  };
+};

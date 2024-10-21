@@ -52,7 +52,7 @@ const page = () => {
     {
       analtyticsTitle: "Total Talents Registered",
       stats: talents.length != 0 ? talents.length : 0,
-      desc: `${shortList} talents shortlisted on frack`,
+      desc: `${shortList.length} talents shortlisted on frack`,
       link: "/control-room/manage-talents",
       linkName: "Manage talents",
     },

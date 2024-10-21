@@ -19,7 +19,9 @@ const ProfilePhotoHandler: React.FC<ProfilePhotoProps> = ({ user, talent }) => {
           className={`w-full h-full text-white text-8xl font-bold centered`}
           style={{ background: user?.hex }}
         >
-          {user?.firstName[0]}
+          {talent
+            ? user?.firstName[0]
+            : (user as userCompanyObject)?.companyName[0]}
         </div>
       )}
     </div>

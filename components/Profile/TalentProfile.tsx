@@ -6,7 +6,7 @@ import ClientProvider from "@/components/Client/ClientProvider";
 const TalentProfile = ({ user }: { user: userObject }) => {
   return (
     <ClientProvider>
-      <Profile skillsBool user={user} skillsArr={user?.skills} />
+      <Profile skillsBool user={user} />
     </ClientProvider>
   );
 };

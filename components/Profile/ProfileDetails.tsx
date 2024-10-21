@@ -3,26 +3,60 @@
 import ProfileBox, {
   DownloadResumeBox,
 } from "@/components/Elements/ProfileBox";
-import { useDeleteTalentProfile } from "@/hooks/admin-analytics-hook";
+import {
+  useDeleteCompanyProfile,
+  useDeleteTalentProfile,
+} from "@/hooks/admin-analytics-hook";
 import { userObject, userCompanyObject } from "@/utilities/typeDefs";
-import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 
-// Define a conditional type for the user prop based on skillsBool
 type ProfileDetailsProps<T extends boolean> = {
   skillsBool: T;
   user: T extends true ? userObject : userCompanyObject;
-  skillsArr: string[];
+};
+
+const validationRules = {
+  url: {
+    required: "Your LinkedIn URL is required",
+    pattern: {
+      value: /^https:\/\/(www\.)?calendly\.com\/.*$/,
+      message: "Invalid LinkedIn URL",
+    },
+  },
 };
 
 const ProfileDetails = <T extends boolean>({
   skillsBool,
   user,
-  skillsArr,
 }: ProfileDetailsProps<T>) => {
   const [deletePrompt, setDeletePrompt] = useState(false);
+  const [schedulePrompt, setSchedulePrompt] = useState(false);
+  const [notifyPrompt, setNotifyPrompt] = useState(false);
   const { onSubmit: deleteTalent, loading } = useDeleteTalentProfile();
+  const { onSubmit: deleteCompany } = useDeleteCompanyProfile();
   const deleteProfile = () => {
     deleteTalent((user as userObject)._id);
+  };
+  const deleteCompanyProfile = () => {
+    deleteCompany((user as userCompanyObject)._id);
+  };
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = useForm();
+
+  const onSubmit = (data: any) => {};
+  const linkRef = useRef<HTMLAnchorElement>(null);
+
+  const openCalendly = () => {
+    const link = linkRef.current;
+    if (link) {
+      link.href = "https://calendly.com/";
+      link.click();
+    }
   };
   return (
     <section className="basis-[70%]">
@@ -69,7 +103,7 @@ const ProfileDetails = <T extends boolean>({
             {!deletePrompt ? (
               <div>
                 <button
-                  className="py-4 px-6 bg-red-700 text-white rounded-md font-semibold mt-14 btn-hover"
+                  className="py-4 px-6 bg-red-700 text-white rounded-md font-semibold mt-14 btn-hover hover:bg-red-800"
                   onClick={() => setDeletePrompt(true)}
                 >
                   Delete Talent Profile
@@ -126,9 +160,123 @@ const ProfileDetails = <T extends boolean>({
               details={`${(user as userCompanyObject)?.industry.join(", ")} `}
             />
             <ProfileBox title={"Work Culture"} details={user?.preference} />
-            <button className="py-4 px-6 bg-red-600 text-white rounded-md font-semibold mt-14 btn-hover">
-              Delete Company's Profile
+            <button
+              className="py-4 px-6 bg-[#22CCED] text-white rounded-md font-semibold mt-14 btn-hover hover:bg-[#22cbedb2]"
+              onClick={() => setSchedulePrompt(true)}
+            >
+              View jobs posted
             </button>
+            <span className="text-sm mt-3 w-full text-[#000080] font-semibold  italic block">
+              (View all jobs posted by company)
+            </span>
+            {!schedulePrompt ? (
+              <div>
+                <button
+                  className="py-4 px-6 bg-[#000080] text-white rounded-md font-semibold mt-6 btn-hover"
+                  onClick={() => setSchedulePrompt(true)}
+                >
+                  Schedule a Meeting
+                </button>
+                <span className="text-sm mt-3 w-full text-[#000080] font-semibold  italic block">
+                  (Schedule Meeting with company and notify)
+                </span>
+              </div>
+            ) : (
+              <div>
+                <div className="flex lg:gap-5 gap-0 max-lg:flex-col ">
+                  <a ref={linkRef} style={{ display: "none" }} target="_blank">
+                    hidden download link
+                  </a>
+                  <button
+                    className="py-4 px-9 bg-[#22CCED] text-white rounded-md font-semibold mt-6 btn-hover hover:bg-[#22cbedb2] max-w-[180px]"
+                    onClick={openCalendly}
+                  >
+                    Schedule
+                  </button>
+                  <button
+                    className="py-4 px-9 bg-[#000080] text-white rounded-md font-semibold mt-6 btn-hover max-w-[180px]"
+                    onClick={() => setNotifyPrompt(false)}
+                  >
+                    Notify
+                  </button>
+                  <button
+                    className="py-4 px-9 bg-[#000080] text-white rounded-md font-semibold mt-6 btn-hover max-w-[180px]"
+                    onClick={() => setSchedulePrompt(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <span className="text-sm mt-3 w-full text-[#000080] font-semibold  italic block">
+                  (Schedule Meeting with company and notify)
+                </span>
+              </div>
+            )}
+            {notifyPrompt && (
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="flex gap-3 formdivs ">
+                  <input
+                    type="url"
+                    placeholder="Enter meeting link"
+                    {...register("meetingUrl", {
+                      required: validationRules.url.required,
+                      pattern: validationRules.url.pattern,
+                    })}
+                  />
+                  <button
+                    type="submit"
+                    className="basis-[20%] h-full bg-[#000080] text-white shadow-sm rounded-lg btn-hover"
+                    disabled={isSubmitting}
+                  >
+                    {loading ? (
+                      <div className="flex items-center justify-center">
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        loading
+                      </div>
+                    ) : (
+                      "Notify"
+                    )}
+                  </button>
+                </div>
+                {errors.url && (
+                  <span className="text-red-600 text-sm">
+                    Please insert calendly meeting link
+                  </span>
+                )}
+              </form>
+            )}
+            {!deletePrompt ? (
+              <div>
+                <button
+                  className="py-4 px-6 bg-red-700 text-white rounded-md font-semibold mt-6 btn-hover hover:bg-red-800"
+                  onClick={() => setDeletePrompt(true)}
+                >
+                  Delete Company's Profile
+                </button>
+                <span className="text-sm mt-3 w-full text-[#000080] font-semibold  italic block">
+                  (Delete profile permanently from database)
+                </span>
+              </div>
+            ) : (
+              <div>
+                <div className="flex sm:gap-5 gap-0 max-sm:flex-col ">
+                  <button
+                    className="py-4 px-9 bg-red-700 text-white rounded-md font-semibold mt-6 btn-hover hover:bg-red-800 max-w-[180px]"
+                    onClick={deleteCompanyProfile}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="py-4 px-9 bg-[#000080] text-white rounded-md font-semibold mt-6 btn-hover max-w-[180px] "
+                    onClick={() => setDeletePrompt(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <span className="text-sm mt-3 w-full text-[#000080] font-semibold  italic block">
+                  (Delete profile permanently from database)
+                </span>
+              </div>
+            )}
           </section>
         )}
       </section>

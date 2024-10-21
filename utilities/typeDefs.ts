@@ -24,6 +24,7 @@ export type userObject = {
 };
 
 export type userCompanyObject = {
+  _id: string;
   companyName: string;
   firstName: string;
   lastName: string;
