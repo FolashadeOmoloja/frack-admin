@@ -3,6 +3,7 @@
 import ProfileBox, {
   DownloadResumeBox,
 } from "@/components/Elements/ProfileBox";
+import { useDeleteTalentProfile } from "@/hooks/admin-analytics-hook";
 import { userObject, userCompanyObject } from "@/utilities/typeDefs";
 import { useState } from "react";
 
@@ -19,6 +20,10 @@ const ProfileDetails = <T extends boolean>({
   skillsArr,
 }: ProfileDetailsProps<T>) => {
   const [deletePrompt, setDeletePrompt] = useState(false);
+  const { onSubmit: deleteTalent, loading } = useDeleteTalentProfile();
+  const deleteProfile = () => {
+    deleteTalent((user as userObject)._id);
+  };
   return (
     <section className="basis-[70%]">
       <section
@@ -78,7 +83,7 @@ const ProfileDetails = <T extends boolean>({
                 <div className="flex gap-5">
                   <button
                     className="py-4 px-9 bg-red-700 text-white rounded-md font-semibold mt-14 btn-hover hover:bg-red-800"
-                    onClick={() => setDeletePrompt(true)}
+                    onClick={deleteProfile}
                   >
                     Delete
                   </button>
@@ -127,7 +132,6 @@ const ProfileDetails = <T extends boolean>({
           </section>
         )}
       </section>
-      {/* {skillsBool ? <SkillsBox initialSkills={skillsArr} /> : null} */}
     </section>
   );
 };
