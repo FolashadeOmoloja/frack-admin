@@ -1,0 +1,28 @@
+import { FaCamera } from "react-icons/fa";
+import { useRef, ChangeEvent } from "react";
+import { userObject, userCompanyObject } from "@/utilities/typeDefs";
+
+import { Loader2 } from "lucide-react";
+
+interface ProfilePhotoProps {
+  user: userObject | userCompanyObject;
+  talent?: boolean;
+}
+
+const ProfilePhotoHandler: React.FC<ProfilePhotoProps> = ({ user, talent }) => {
+  return (
+    <div className="h-[200px] w-[200px] rounded-full overflow-hidden border border-[#000080]">
+      {user?.profileImage ? (
+        <img src={user?.profileImage} alt="Profile" className="object-center" />
+      ) : (
+        <div
+          className={`w-full h-full text-white text-8xl font-bold centered`}
+          style={{ background: user?.hex }}
+        >
+          {user?.firstName[0]}
+        </div>
+      )}
+    </div>
+  );
+};
+export default ProfilePhotoHandler;

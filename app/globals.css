@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .div-center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@layer components {
+  .navItem {
+    @apply fixed  top-[96px] left-0 bottom-0 px-9 py-5 max-sm:px-4  transform transition-transform duration-700 ease-in-out bg-white z-30 w-full;
+  }
+
+  .section-container {
+    @apply px-[100px] max-xlg:px-[50px] max-lg:px-9 max-sm:px-4 relative max-lg:top-[96px] mt-[151px] max-slg:mt-[50px];
+  }
+
+  .bg-text {
+    @apply bg-gradient-to-r from-[#22CCED] via-[#1995CF]  to-[#000080] text-transparent bg-clip-text;
+  }
+
+  .picture-background {
+    @apply h-[500px] relative max-lg:top-[96px] mt-[151px] max-slg:mt-[50px] bg-picture-bg bg-cover bg-no-repeat w-full bg-center md:bg-right lg:bg-right max-md:h-[400px] max-sm:h-[350px];
+  }
+
+  .headingspan {
+    @apply font-semibold leading-[26.4px] md:text-2xl text-[20px] max-sm:text-lg text-[#161519] mb-4;
+  }
+
+  .contact-input {
+    @apply w-full h-[47px] rounded-md py-[10px] px-4 bg-white outline-none text-black placeholder:text-[#696969];
+  }
+
+  .header-headline {
+    @apply font-bold text-[72px] max-xslg:text-[52px]  text-[#111013]  max-md:text-[38px] max-sm:text-3xl  max-xsm:text-center text-wrap;
+  }
+
+  .header-headline-span {
+    @apply bg-gradient-to-r from-[#000080] via-[#1995CF]  to-[#1995CF] text-transparent bg-clip-text max-xslg:mt-5;
+  }
+
+  .paginationBlogBtn {
+    @apply p-3 text-sm border rounded-md hover:border-2 hover:border-[#000080] flex gap-2 items-center font-semibold border-gray-300;
+  }
+
+  .dropdown-button {
+    @apply bg-white border border-black cursor-pointer outline-none focus:border-[#000080]  text-gray-600;
+  }
+
+  .dropdown-menu {
+    @apply absolute mt-4 bg-white shadow-lg rounded z-10 w-full overflow-y-auto max-h-[300px];
+  }
+
+  .dropdown-item {
+    @apply px-4 py-2 cursor-pointer hover:bg-[#00008015];
+  }
+
+  .formdivs label {
+    @apply text-sm font-semibold;
+  }
+
+  .formdivs input,
+  .formdivs textarea {
+    @apply rounded-lg border border-gray-200 w-full p-3 outline-none focus:border-[#000080] placeholder:text-sm placeholder:text-gray-400;
+  }
+
+  .formdivs .input {
+    @apply focus:border-gray-200;
+  }
+
+  .phoneinputdiv:focus {
+    @apply border-l border-[#000080];
+  }
+
+  .login-text {
+    @apply text-white xlg:max-w-[320px] max-w-[250px] leading-[29px] tracking-[1.5%] absolute right-0 mr-4 xlg:top-[150px] top-[50px] text-sm max-xslg:hidden;
+  }
+
+  .signup-form {
+    @apply md:max-w-[529px] max-sm:p-4  mt-6 max-xl:px-[50px];
+  }
+
+  .login-btn {
+    @apply w-full h-12 bg-[#000080] text-white shadow-sm rounded-lg hover:shadow-xl hover:bg-[#000099] transition-all duration-300;
+  }
+  .btn-hover {
+    @apply hover:shadow-xl hover:bg-[#000099] transition-all duration-300;
+  }
+  .filterDiv {
+    @apply md:sticky lg:top-[40px] md:top-[80px]  h-full md:h-[calc(100vh-80px)] overflow-y-auto flex-shrink-0 md:w-1/3 lg:w-1/4 bg-white p-5 shadow-md rounded-sm custom-scrollbar;
+  }
+
+  .dashboard-container {
+    @apply relative top-24 py-20 px-[100px] max-xlg:px-[50px] max-xlg:py-[50px] max-sm:px-4;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.button-container:hover .icon-animate,
+.link-animate:hover .icon-animate {
+  animation: slideIn 0.5s ease-out forwards;
+  opacity: 1;
+}
+
+.tab {
+  position: relative;
+  width: 212px;
+  height: 33px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.tab::before {
+  content: "";
+  position: absolute;
+  bottom: -3px; /* Adjust according to your needs */
+  left: 50%;
+  width: 0;
+  height: 3px; /* Border height */
+  background-color: #000080;
+  transition: all 0.3s ease-in-out;
+  transform: translateX(-50%);
+}
+
+.tab.active {
+  color: #000080;
+}
+
+.tab.active::before {
+  width: 100%;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+  }
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
