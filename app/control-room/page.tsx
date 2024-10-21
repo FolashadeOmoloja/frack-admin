@@ -1,7 +1,10 @@
 "use client";
 import DashboardLayout from "@/components/DashboardLayout/DashboardLayout";
 import DashboardNavbar from "@/components/Navbar/Navbar";
-import { useGetAllTalents } from "@/hooks/admin-analytics-hook";
+import {
+  useGetAllCompanies,
+  useGetAllTalents,
+} from "@/hooks/admin-analytics-hook";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -17,7 +20,15 @@ const page = () => {
   }, [searchParams]);
 
   const { talents } = useGetAllTalents();
-  console.log(talents);
+  const { companies } = useGetAllCompanies();
+
+  const filterTalents = (accountStatus: string) => {
+    return talents.filter((talent) =>
+      //@ts-ignore
+      talent.accountStatus?.toLowerCase().includes(accountStatus.toLowerCase())
+    );
+  };
+  const shortList = talents.length != 0 ? filterTalents("shortlist") : [];
 
   // // Function to filter jobs based on status
   // const filterJobs = (status: string) => {
@@ -41,16 +52,16 @@ const page = () => {
     {
       analtyticsTitle: "Total Talents Registered",
       stats: talents.length != 0 ? talents.length : 0,
-      desc: "Number of talents signed up on Frack",
+      desc: `${shortList} talents shortlisted on frack`,
       link: "/control-room/manage-talents",
       linkName: "Manage talents",
     },
     {
-      analtyticsTitle: "Talent Interviews",
-      stats: 136,
-      desc: "25 Active Interviews",
-      link: "",
-      linkName: "",
+      analtyticsTitle: "Total Companies Registered",
+      stats: companies.length != 0 ? companies.length : 0,
+      desc: `${0} companies currently hiring`,
+      link: "/control-room/manage-companies",
+      linkName: "Manage Companies",
     },
     {
       analtyticsTitle: "Employed Talents",

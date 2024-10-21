@@ -16,21 +16,18 @@ export const useGetAllTalents = () => {
     const fetchTalents = async () => {
       dispatch(setLoading(true));
       try {
-        const response = await axios.get(
-          `${ADMIN_API_END_POINT}//get-talents`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${ADMIN_API_END_POINT}/get-talents`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        });
         setTalents(response.data.talents);
       } catch (error: any) {
         const errorMessage =
           error.response?.data?.message ||
           error.message ||
-          "Failed to fetch jobs";
+          "Failed to fetch talents";
         toast.error(errorMessage);
       } finally {
         dispatch(setLoading(false));
@@ -41,6 +38,42 @@ export const useGetAllTalents = () => {
   }, []);
 
   return { talents, loading };
+};
+
+export const useGetAllCompanies = () => {
+  const dispatch = useDispatch();
+
+  const [companies, setCompanies] = useState([]);
+  const { loading } = useSelector((store: any) => store.auth);
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      dispatch(setLoading(true));
+      try {
+        const response = await axios.get(
+          `${ADMIN_API_END_POINT}/get-companies`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
+        setCompanies(response.data.companies);
+      } catch (error: any) {
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "Failed to fetch companies";
+        toast.error(errorMessage);
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+
+    fetchCompanies();
+  }, []);
+
+  return { companies, loading };
 };
 
 export const useUpdateTalentProfileStatus = () => {
