@@ -16,7 +16,7 @@ const DropDown = [
   {
     navItem: "Notifications",
     icon: "/images/dashboard/icon1.svg",
-    href: "/hire-talent/dashboard/notifications",
+    href: "/control-room/notifications",
   },
   {
     navItem: "Sign Out",

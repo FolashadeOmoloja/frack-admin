@@ -81,7 +81,7 @@ export const HireLeftSection = ({ user }: { user: userCompanyObject }) => {
           Profile status: {user?.accountStatus}
         </div>
       </div>
-      <div className="bg-white rounded-md  flex justify-between gap-7 p-6 max-xxsm:flex-col max-xxsm:gap-4 max-xsm:p-4">
+      <div className="bg-white rounded-md  flex justify-between gap-7 p-6 max-xsm:flex-col max-xsm:gap-4 max-xsm:p-4">
         <span className="text-[#0A66C2] text-3xl">
           <FaLinkedin />
         </span>

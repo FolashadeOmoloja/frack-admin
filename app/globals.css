@@ -123,6 +123,10 @@
   .dashboard-container {
     @apply relative top-24 py-20 px-[100px] max-xlg:px-[50px] max-xlg:py-[50px] max-sm:px-4;
   }
+
+  .notice-div a {
+    @apply text-[#000080] font-semibold  ;
+  }
 }
 
 @keyframes slideIn {

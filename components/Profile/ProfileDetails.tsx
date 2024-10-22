@@ -7,10 +7,12 @@ import {
   useDeleteCompanyProfile,
   useDeleteTalentProfile,
 } from "@/hooks/admin-analytics-hook";
+import { handleSendCompanyNotification } from "@/hooks/notification-hook";
 import { userObject, userCompanyObject } from "@/utilities/typeDefs";
 import { Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import validator from "validator";
 
 type ProfileDetailsProps<T extends boolean> = {
   skillsBool: T;
@@ -34,7 +36,9 @@ const ProfileDetails = <T extends boolean>({
   const [deletePrompt, setDeletePrompt] = useState(false);
   const [schedulePrompt, setSchedulePrompt] = useState(false);
   const [notifyPrompt, setNotifyPrompt] = useState(false);
-  const { onSubmit: deleteTalent, loading } = useDeleteTalentProfile();
+  const { onSubmit: deleteTalent } = useDeleteTalentProfile();
+  const { onSubmit: sendNotification, loading } =
+    handleSendCompanyNotification();
   const { onSubmit: deleteCompany } = useDeleteCompanyProfile();
   const deleteProfile = () => {
     deleteTalent((user as userObject)._id);
@@ -48,7 +52,6 @@ const ProfileDetails = <T extends boolean>({
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = (data: any) => {};
   const linkRef = useRef<HTMLAnchorElement>(null);
 
   const openCalendly = () => {
@@ -58,6 +61,27 @@ const ProfileDetails = <T extends boolean>({
       link.click();
     }
   };
+
+  const onSubmit = (data: any) => {
+    const meetingUrl = data.meetingUrl.trim();
+    const sanitizedMeetingUrl = validator.isURL(meetingUrl) ? meetingUrl : "#";
+    const senderMessage = `
+    You sent a notification to <b>${
+      (user as userCompanyObject).companyName
+    }</b> 
+    to pick an available time for a meeting.<br /> 
+    Here is the meeting link: <a href="${sanitizedMeetingUrl}" target="_blank">Click here</a>
+  `;
+    const receiverMessage = `We would like to meet with your team to discuss your hiring needs. Please select a convenient date and time for the meeting by using the following link:\n <a href="${sanitizedMeetingUrl}" target="_blank">Click here</a>`;
+
+    sendNotification(
+      (user as userObject)._id,
+      senderMessage,
+      receiverMessage,
+      sanitizedMeetingUrl
+    );
+  };
+
   return (
     <section className="basis-[70%]">
       <section
@@ -195,13 +219,16 @@ const ProfileDetails = <T extends boolean>({
                   </button>
                   <button
                     className="py-4 px-9 bg-[#000080] text-white rounded-md font-semibold mt-6 btn-hover max-w-[180px]"
-                    onClick={() => setNotifyPrompt(false)}
+                    onClick={() => setNotifyPrompt(true)}
                   >
                     Notify
                   </button>
                   <button
                     className="py-4 px-9 bg-[#000080] text-white rounded-md font-semibold mt-6 btn-hover max-w-[180px]"
-                    onClick={() => setSchedulePrompt(false)}
+                    onClick={() => {
+                      setSchedulePrompt(false);
+                      setNotifyPrompt(false);
+                    }}
                   >
                     Cancel
                   </button>
@@ -213,10 +240,10 @@ const ProfileDetails = <T extends boolean>({
             )}
             {notifyPrompt && (
               <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="flex gap-3 formdivs ">
+                <div className="flex gap-3 formdivs mt-4">
                   <input
                     type="url"
-                    placeholder="Enter meeting link"
+                    placeholder="Enter calendly meeting link"
                     {...register("meetingUrl", {
                       required: validationRules.url.required,
                       pattern: validationRules.url.pattern,
@@ -224,7 +251,7 @@ const ProfileDetails = <T extends boolean>({
                   />
                   <button
                     type="submit"
-                    className="basis-[20%] h-full bg-[#000080] text-white shadow-sm rounded-lg btn-hover"
+                    className="basis-[20%] p-3 bg-[#000080] text-white shadow-sm rounded-lg btn-hover"
                     disabled={isSubmitting}
                   >
                     {loading ? (
@@ -237,11 +264,6 @@ const ProfileDetails = <T extends boolean>({
                     )}
                   </button>
                 </div>
-                {errors.url && (
-                  <span className="text-red-600 text-sm">
-                    Please insert calendly meeting link
-                  </span>
-                )}
               </form>
             )}
             {!deletePrompt ? (
