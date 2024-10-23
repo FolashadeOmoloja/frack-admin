@@ -7,6 +7,7 @@ import {
   useDeleteCompanyProfile,
   useDeleteTalentProfile,
 } from "@/hooks/admin-analytics-hook";
+import { useGetCompanyJobs } from "@/hooks/jobPosts-hook";
 import { handleSendCompanyNotification } from "@/hooks/notification-hook";
 import { userObject, userCompanyObject } from "@/utilities/typeDefs";
 import { Loader2 } from "lucide-react";
@@ -37,6 +38,7 @@ const ProfileDetails = <T extends boolean>({
   const [schedulePrompt, setSchedulePrompt] = useState(false);
   const [notifyPrompt, setNotifyPrompt] = useState(false);
   const { onSubmit: deleteTalent } = useDeleteTalentProfile();
+  const { fetchJobs } = useGetCompanyJobs();
   const { onSubmit: sendNotification, loading } =
     handleSendCompanyNotification();
   const { onSubmit: deleteCompany } = useDeleteCompanyProfile();
@@ -45,6 +47,10 @@ const ProfileDetails = <T extends boolean>({
   };
   const deleteCompanyProfile = () => {
     deleteCompany((user as userCompanyObject)._id);
+  };
+
+  const viewJobs = () => {
+    fetchJobs((user as userCompanyObject)._id);
   };
   const {
     handleSubmit,
@@ -186,9 +192,16 @@ const ProfileDetails = <T extends boolean>({
             <ProfileBox title={"Work Culture"} details={user?.preference} />
             <button
               className="py-4 px-6 bg-[#22CCED] text-white rounded-md font-semibold mt-14 btn-hover hover:bg-[#22cbedb2]"
-              onClick={() => setSchedulePrompt(true)}
+              onClick={viewJobs}
             >
-              View jobs posted
+              {loading ? (
+                <div className="flex items-center justify-center">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Fetching Jobs
+                </div>
+              ) : (
+                "View jobs posted"
+              )}
             </button>
             <span className="text-sm mt-3 w-full text-[#000080] font-semibold  italic block">
               (View all jobs posted by company)

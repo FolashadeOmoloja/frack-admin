@@ -7,27 +7,33 @@ export async function middleware(req: NextRequest) {
   const url = req.nextUrl.pathname;
   const isAdminRoute = url.startsWith("/control-room");
 
+  // Check if the user is on the root route ("/")
+  if (url === "/") {
+    // If token exists, redirect to control-room
+    if (token) {
+      return NextResponse.redirect(new URL("/control-room", req.url));
+    } else {
+      return NextResponse.next(); // Allow access to "/" if no token
+    }
+  }
+
   // If the route is not protected, let the request proceed
   if (!isAdminRoute) {
     return NextResponse.next();
   }
 
-  // If no token is found, set the loggedOut cookie and redirect to login pages
+  // If no token is found for admin route, redirect to login or homepage
   if (!token) {
     const response = NextResponse.redirect(
-      new URL(
-        isAdminRoute ? "/" : req.url,
-        req.url // This will create a full URL
-      )
+      new URL(isAdminRoute ? "/" : req.url, req.url)
     );
-
     return response;
   }
 
   try {
     let secretKey;
 
-    // Assign the correct secret key based on the route
+    // Assign the correct secret key for the admin route
     if (isAdminRoute) {
       secretKey = new TextEncoder().encode(process.env.ADMIN_SECRET_KEY);
     }
@@ -45,19 +51,19 @@ export async function middleware(req: NextRequest) {
 
     // Dynamic route protection based on user role
     if (isAdminRoute && userRole === "admin") {
-      return NextResponse.next(); // Allow access based on role
+      return NextResponse.next(); // Allow access to admin route
     } else {
       return NextResponse.redirect(new URL("/auth/unauthorized", req.url));
     }
   } catch (error) {
     console.error("Error verifying token:", error);
-    const response = NextResponse.redirect(new URL("/", req.url));
-    return response;
+    return NextResponse.redirect(new URL("/", req.url));
   }
 }
 
 export const config = {
   matcher: [
     "/control-room/:path*", // Admin routes
+    "/", // Root route
   ],
 };

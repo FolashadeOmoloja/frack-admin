@@ -42,3 +42,25 @@ export type userCompanyObject = {
   location: string;
   linkedInUrl: string;
 };
+
+export interface JobPosted {
+  _id: string;
+  title: string;
+  department: string;
+  location: string;
+  employmentType: string;
+  jobProximity: string;
+  jobHours: string;
+  experience: string;
+  salaryRange1: string;
+  salaryRange2: string;
+  status: string;
+  country: string;
+  role: string;
+  company: userCompanyObject;
+  applicants?: userObject[];
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  skills: string[];
+}

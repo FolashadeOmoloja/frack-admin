@@ -28,7 +28,9 @@ const StatsCard = ({ analytics }: { analytics: analytics }) => {
           </span>
           <Link
             href={item.link}
-            className="flex items-center gap-2 text-[#000080] text-sm font-semibold link-animate"
+            className={`flex items-center gap-2 ${
+              idx === 0 ? "text-white" : "text-[#000080]"
+            }  text-sm font-semibold link-animate`}
           >
             <span>{item.linkName}</span>
             <FaArrowRight className="icon-animate" />

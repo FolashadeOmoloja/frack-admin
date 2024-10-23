@@ -3,6 +3,8 @@ import authSlice from "./slices/authSlice";
 import talentSlice from "./slices/talentSlice";
 import companySlice from "./slices/companySlice";
 import notificationSlice from "./slices/notificationSlice";
+import jobSlice from "./slices/jobSlice";
+import companyJobsSlice from "./slices/companyJobsSlice";
 import {
   persistStore,
   persistReducer,
@@ -28,6 +30,8 @@ const rootReducer = combineReducers({
   talent: talentSlice,
   company: companySlice,
   notification: notificationSlice,
+  job: jobSlice,
+  companyJobs: companyJobsSlice,
 });
 
 // Persisting the combined reducers

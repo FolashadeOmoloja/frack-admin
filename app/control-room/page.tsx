@@ -5,6 +5,7 @@ import {
   useGetAllCompanies,
   useGetAllTalents,
 } from "@/hooks/admin-analytics-hook";
+import { useGetAllJobs } from "@/hooks/jobPosts-hook";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -21,6 +22,14 @@ const page = () => {
 
   const { talents } = useGetAllTalents();
   const { companies } = useGetAllCompanies();
+  const { jobs } = useGetAllJobs();
+
+  const filterJobs = (status: string) => {
+    return jobs.filter((job) =>
+      //@ts-ignore
+      job.status?.toLowerCase().includes(status.toLowerCase())
+    );
+  };
 
   const filterTalents = (accountStatus: string) => {
     return talents.filter((talent) =>
@@ -28,38 +37,39 @@ const page = () => {
       talent.accountStatus?.toLowerCase().includes(accountStatus.toLowerCase())
     );
   };
+
+  const filterCompanies = (accountStatus: string) => {
+    return companies.filter((company) =>
+      //@ts-ignore
+      company.accountStatus?.toLowerCase().includes(accountStatus.toLowerCase())
+    );
+  };
   const shortList = talents.length != 0 ? filterTalents("shortlist") : [];
-
-  // // Function to filter jobs based on status
-  // const filterJobs = (status: string) => {
-  //   return jobs.filter((job) =>
-  //     //@ts-ignore
-  //     job.status?.toLowerCase().includes(status.toLowerCase())
-  //   );
-  // };
-
-  // const openedJobs = jobs.length != 0 ? filterJobs("open") : [];
-  // const closedJobs = jobs.length != 0 ? filterJobs("closed") : [];
+  const hiringList = companies.length != 0 ? filterCompanies("recruiting") : [];
+  const openedJobs = jobs.length != 0 ? filterJobs("open") : [];
+  const closedJobs = jobs.length != 0 ? filterJobs("closed") : [];
 
   const companyAnalytics = [
     {
-      analtyticsTitle: "Active Job Offers",
-      stats: 123,
-      desc: `Current active job listings`,
-      link: "",
-      linkName: "",
+      analtyticsTitle: "Total Job Offers",
+      stats: jobs.length != 0 ? jobs.length : 0,
+      desc: `${openedJobs.length} active job listings`,
+      link: "/control-room/manage-jobs",
+      linkName: "Manage Jobs",
     },
     {
       analtyticsTitle: "Total Talents Registered",
       stats: talents.length != 0 ? talents.length : 0,
       desc: `${shortList.length} talents shortlisted on frack`,
       link: "/control-room/manage-talents",
-      linkName: "Manage talents",
+      linkName: "Manage Talents",
     },
     {
       analtyticsTitle: "Total Companies Registered",
       stats: companies.length != 0 ? companies.length : 0,
-      desc: `${0} companies currently hiring`,
+      desc: `${hiringList.length} compan${
+        hiringList.length === 1 ? "y" : "ies"
+      } currently hiring`,
       link: "/control-room/manage-companies",
       linkName: "Manage Companies",
     },
