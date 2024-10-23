@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import MainTable from "../Elements/Table/MainTable";
-import { companyActiveColumns, closedJobsColumns } from "@/utilities/tableData";
+import {
+  singleCompanyColumns,
+  singleCompClosedJobsColumns,
+} from "@/utilities/tableData";
 import { JobPosted } from "@/utilities/typeDefs";
 import { Loader2 } from "lucide-react";
 import { useSelector } from "react-redux";
@@ -20,6 +23,7 @@ const CompanyJobTable = () => {
   const [active, setActive] = useState<IsActiveState>({ 0: true });
   const [changeTable, setChangeTable] = useState(0);
   const router = useRouter();
+  const companyName = jobs[0].company.companyName;
 
   // Function to filter jobs based on status
   const filterJobs = (status: string) => {
@@ -48,9 +52,7 @@ const CompanyJobTable = () => {
         <FaArrowLeft />
         <span>Go back</span>
       </div>
-      <h2 className="text-2xl font-bold mb-1">
-        {jobs.company.companyName} Job Posts
-      </h2>
+      <h2 className="text-2xl font-bold mb-1">{companyName} Job Postings</h2>
       <span className="text-[#7C8698]">Complete job post overview</span>
       <div className="flex w-full text-[#626263] md:text-lg font-bold mt-16 border-b border-[#CCD2D9]">
         {filterArr.map((item, idx) => (
@@ -74,7 +76,7 @@ const CompanyJobTable = () => {
         ) : (
           <MainTable<JobPosted>
             data={openedJobs}
-            columns={companyActiveColumns}
+            columns={singleCompanyColumns}
           />
         )
       ) : changeTable === 1 ? (
@@ -85,7 +87,10 @@ const CompanyJobTable = () => {
             No data available at the moment.
           </p>
         ) : (
-          <MainTable<JobPosted> data={closedJobs} columns={closedJobsColumns} />
+          <MainTable<JobPosted>
+            data={closedJobs}
+            columns={singleCompClosedJobsColumns}
+          />
         )
       ) : null}
     </section>

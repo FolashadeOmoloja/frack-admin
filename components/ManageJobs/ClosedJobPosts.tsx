@@ -1,38 +1,44 @@
-import { useGetAllCompanies } from "@/hooks/admin-analytics-hook";
-import { JobPosted, userCompanyObject } from "@/utilities/typeDefs";
-import Link from "next/link";
+import { JobPosted } from "@/utilities/typeDefs";
 import { FaArrowLeft } from "react-icons/fa6";
 import CTABTN from "../Elements/CTA-Button";
-import { useDispatch } from "react-redux";
-import { setCompany } from "@/redux/slices/companySlice";
 import { useRouter } from "next/navigation";
+import { useDeleteCompanyJob } from "@/hooks/jobPosts-hook";
+import { useDispatch } from "react-redux";
+import { setCompanyJobs } from "@/redux/slices/companyJobsSlice";
 
-const JobPost = ({ jobData }: { jobData: JobPosted }) => {
-  const { companies } = useGetAllCompanies();
-  const company = companies.find(
-    (company: userCompanyObject) => company._id === jobData.company._id
-  );
-  const encodeCompanyId = (companyId: string) => {
-    return btoa(companyId); // Base64 encode
-  };
-  const paramCompanyId = encodeCompanyId(jobData.company._id);
-  const dispatch = useDispatch();
+const JobPost = ({
+  jobData,
+  href,
+  update,
+}: {
+  jobData: JobPosted;
+  href: string;
+  update: boolean;
+}) => {
+  const { onSubmit: deleteJob, loading, updatedJobs } = useDeleteCompanyJob();
+
   const router = useRouter();
-  const viewCompany = () => {
-    dispatch(setCompany(company));
-    router.push(`/control-room/manage-companies/${paramCompanyId}`);
+  const dispatch = useDispatch();
+  const deleteClosedJob = () => {
+    deleteJob(jobData.company._id, jobData._id);
+    if (update) {
+      dispatch(setCompanyJobs(updatedJobs));
+      console.log(updatedJobs);
+      console.log("hi");
+    }
+    router.push(href);
   };
   return (
     <main className="section-container relative top-[96px] mt-[50px]">
-      <Link
-        href={"/control-room/manage-jobs"}
-        className="flex text-[#000080] gap-3 text-xl items-center font-bold"
+      <div
+        className="flex text-[#000080] gap-3 text-xl items-center font-bold cursor-pointer"
+        onClick={() => router.back()}
       >
         <FaArrowLeft />
         <span>Go back</span>
-      </Link>
+      </div>
       <h3 className="text-[52px] max-md:text-[38px] max-sm:text-3xl font-bold text-[#111013] md:max-w-[500px] leading-[72px] mb-9 mt-10">
-        {jobData?.title}
+        {jobData?.title} <span className="text-[#000089]">(Closed)</span>
       </h3>
       <div className="flex md:gap-7 gap-4  md:text-lg flex-wrap md:mb-[100px] mb-[50px]">
         <span>{jobData?.location}</span>
@@ -80,23 +86,14 @@ const JobPost = ({ jobData }: { jobData: JobPosted }) => {
         </span>
       </div>
 
-      <div className="pb-14 flex max-sm:flex-col gap-5 ">
+      <div className="pb-14">
         <CTABTN
           route={""}
           isFunc
-          func={viewCompany}
-          CTA={"View Company"}
-          backGround="bg-[#22CCED]"
+          func={deleteClosedJob}
+          CTA={loading ? "Deleting. . ." : "Delete job"}
+          backGround="bg-red-800"
           width="w-[200px] max-xxsm:w-full"
-          showIcon
-        />
-        <CTABTN
-          route={""}
-          isFunc
-          func={() => {}}
-          CTA={"View Applicants"}
-          width="w-[200px] max-xxsm:w-full"
-          showIcon
         />
       </div>
     </main>

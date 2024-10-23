@@ -62,7 +62,7 @@ export const useGetCompanyJobs = () => {
       );
       if (response.data.success) {
         dispatch(setCompanyJobs(response.data.jobs));
-        router.push("/control-room/manage-companies/job");
+        router.push("/control-room/manage-companies/jobs");
       } else {
         toast.error(response.data.message);
       }
@@ -78,4 +78,48 @@ export const useGetCompanyJobs = () => {
   };
 
   return { fetchJobs, loading };
+};
+
+export const useDeleteCompanyJob = () => {
+  const { loading } = useSelector((store: any) => store.auth);
+  const [updatedJobs, setUpdatedJobs] = useState([]);
+  const dispatch = useDispatch();
+
+  const onSubmit = async (id: string, jobId: string) => {
+    dispatch(setLoading(true));
+    try {
+      const response = await axios.delete(
+        `${JOB_API_END_POINT}/delete-job/${id}/${jobId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      const { success, message, jobs } = response.data;
+
+      if (success) {
+        toast.success(message);
+        setUpdatedJobs(jobs);
+      } else {
+        toast.error(message);
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "An unknown error occurred.";
+      toast.error(errorMessage);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  return {
+    onSubmit,
+    loading,
+    updatedJobs,
+  };
 };

@@ -8,6 +8,7 @@ import { setTalent } from "@/redux/slices/talentSlice";
 import { setCompany } from "@/redux/slices/companySlice";
 import { formatTimeDifference } from "./constants";
 import { setJob } from "@/redux/slices/jobSlice";
+import { useDeleteCompanyJob } from "@/hooks/jobPosts-hook";
 
 export const talentsColumn: Column<userObject>[] = [
   {
@@ -308,9 +309,116 @@ export const companyActiveColumns: Column<JobPosted>[] = [
 export const closedJobsColumns: Column<JobPosted>[] = [
   {
     Header: "",
+    accessor: "company",
+    Cell: ({ row }: { row: { original: JobPosted } }) => {
+      return (
+        <div className="flex flex-col gap-3 items-center justify-center">
+          <div className="p-7">
+            <div
+              className="h-[60px] w-[50px] rounded-full overflow-hidden "
+              style={{ width: "50px", height: "50px" }}
+            >
+              {row.original.company.profileImage ? (
+                <img
+                  src={row.original.company.profileImage}
+                  alt=""
+                  className="object-center"
+                />
+              ) : (
+                <section
+                  className={`w-[50px] h-[50px]  text-xl text-white  font-bold centered bg-[#000080]`}
+                >
+                  {row.original.company.companyName[0]}
+                </section>
+              )}
+            </div>
+          </div>
+          <span>{row.original.company.companyName}</span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
     accessor: "title",
     Cell: ({ row }: { row: { original: JobPosted } }) => {
-      return <span>{row.original.title}</span>;
+      const postDate = formatTimeDifference(
+        row.original.createdAt || row.original.updatedAt
+      );
+      return (
+        <div className="flex flex-col gap-4">
+          <span>{row.original.title}</span>
+          <span>{postDate}</span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "department",
+    Cell: ({ row }: { row: { original: JobPosted } }) => {
+      return (
+        <div className="flex flex-col gap-4">
+          <span>{row.original.department}</span>
+          <span>{row.original.location}</span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "employmentType",
+    Cell: ({ row }: { row: { original: JobPosted } }) => {
+      return (
+        <div className="flex flex-col gap-4">
+          <span>{row.original.jobProximity}</span>
+          <span>
+            ${row.original.salaryRange1} - ${row.original.salaryRange2}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "status",
+    Cell: ({ row }: { row: { index: number; original: JobPosted } }) => {
+      const dispatch = useDispatch();
+      const router = useRouter();
+      const viewJob = (data: any, id: string) => {
+        const encodedId = btoa(id);
+        dispatch(setJob(data));
+        router.push(`/control-room/manage-jobs/closed-jobs/${encodedId}`);
+      };
+
+      return (
+        <CTABTN
+          route={``}
+          isFunc
+          func={() => viewJob(row.original, row.original._id)}
+          CTA="Delete Job"
+          height2="h-[50px] text-sm"
+          backGround="bg-[#22CCED]"
+        />
+      );
+    },
+  },
+];
+
+export const singleCompanyColumns: Column<JobPosted>[] = [
+  {
+    Header: "",
+    accessor: "title",
+    Cell: ({ row }: { row: { original: JobPosted } }) => {
+      const postDate = formatTimeDifference(
+        row.original.createdAt || row.original.updatedAt
+      );
+      return (
+        <div className="flex flex-col gap-4">
+          <span>{row.original.title}</span>
+          <span className="font-normal text-base">{postDate}</span>
+        </div>
+      );
     },
   },
   {
@@ -343,29 +451,77 @@ export const closedJobsColumns: Column<JobPosted>[] = [
     Header: "",
     accessor: "applicants",
     Cell: ({ row }: { row: { index: number; original: JobPosted } }) => {
-      // const { onSubmit: updateJob } = useEditJob();
-
       const dispatch = useDispatch();
       const router = useRouter();
-      const changeStatus = async (id: any, idx: any, data: any) => {
-        const updatedStatus: Record<string, any> = {};
-        updatedStatus["status"] = "Open";
-
-        // Call the API to update job status
-        // await updateJob(updatedStatus, id);
-        // dispatch(setJob(data));
-        router.push(`/hire-talent/dashboard/my-jobs/open-job/${idx}`);
+      const viewJob = (data: any, idx: number) => {
+        dispatch(setJob(data));
+        router.push(`/control-room/manage-jobs/${idx}`);
       };
-
       return (
         <CTABTN
           route={``}
           isFunc
-          func={() => changeStatus(row.original._id, row.index, row.original)}
-          CTA="Reopen Job"
+          func={() => viewJob(row.original, row.index)}
+          CTA="View Job"
           height2="h-[50px] text-sm"
           backGround="bg-[#22CCED]"
         />
+      );
+    },
+  },
+];
+
+export const singleCompClosedJobsColumns: Column<JobPosted>[] = [
+  {
+    Header: "",
+    accessor: "title",
+    Cell: ({ row }: { row: { original: JobPosted } }) => {
+      const postDate = formatTimeDifference(
+        row.original.createdAt || row.original.updatedAt
+      );
+      return (
+        <div className="flex flex-col gap-4">
+          <span>{row.original.title}</span>
+          <span className="font-normal text-base">{postDate}</span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "department",
+    Cell: ({ row }: { row: { original: JobPosted } }) => {
+      return (
+        <div className="flex flex-col gap-4">
+          <span>{row.original.department}</span>
+          <span>{row.original.location}</span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "experience",
+    Cell: ({ row }: { row: { original: JobPosted } }) => {
+      return (
+        <div className="flex flex-col gap-4">
+          <span>{row.original.experience}</span>
+          <span>{row.original.jobHours}</span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "employmentType",
+    Cell: ({ row }: { row: { original: JobPosted } }) => {
+      return (
+        <div className="flex flex-col gap-4">
+          <span>{row.original.jobProximity}</span>
+          <span>
+            ${row.original.salaryRange1} - ${row.original.salaryRange2}
+          </span>
+        </div>
       );
     },
   },
@@ -373,12 +529,24 @@ export const closedJobsColumns: Column<JobPosted>[] = [
     Header: "",
     accessor: "status",
     Cell: ({ row }: { row: { index: number; original: JobPosted } }) => {
+      const dispatch = useDispatch();
+      const router = useRouter();
+      const viewJob = (data: any, id: string) => {
+        const encodedId = btoa(id);
+        dispatch(setJob(data));
+        router.push(
+          `/control-room/manage-companies/jobs/closed-jobs/${encodedId}`
+        );
+      };
+
       return (
         <CTABTN
-          route={`/hire-talent/dashboard/my-jobs/${row.index}`}
-          CTA="View Applicants"
-          width="w-[138px]"
+          route={``}
+          isFunc
+          func={() => viewJob(row.original, row.original._id)}
+          CTA="Delete Job"
           height2="h-[50px] text-sm"
+          backGround="bg-[#22CCED]"
         />
       );
     },
