@@ -6,9 +6,11 @@ import CTABTN from "../Elements/CTA-Button";
 import { useDispatch } from "react-redux";
 import { setCompany } from "@/redux/slices/companySlice";
 import { useRouter } from "next/navigation";
+import { useGetApplicants } from "@/hooks/application-hook";
 
 const JobPost = ({ jobData }: { jobData: JobPosted }) => {
   const { companies } = useGetAllCompanies();
+  const { fetchApplicants, loading } = useGetApplicants();
   const company = companies.find(
     (company: userCompanyObject) => company._id === jobData.company._id
   );
@@ -21,6 +23,10 @@ const JobPost = ({ jobData }: { jobData: JobPosted }) => {
   const viewCompany = () => {
     dispatch(setCompany(company));
     router.push(`/control-room/manage-companies/${paramCompanyId}`);
+  };
+
+  const viewApplications = () => {
+    fetchApplicants(jobData._id);
   };
   return (
     <main className="section-container relative top-[96px] mt-[50px]">
@@ -93,8 +99,8 @@ const JobPost = ({ jobData }: { jobData: JobPosted }) => {
         <CTABTN
           route={""}
           isFunc
-          func={() => {}}
-          CTA={"View Applicants"}
+          func={viewApplications}
+          CTA={loading ? "fetching. . ." : "View Applications"}
           width="w-[200px] max-xxsm:w-full"
           showIcon
         />

@@ -16,6 +16,7 @@ interface TableProps<T extends object> {
   columns: Column<T>[];
   setPage?: (value: number) => void;
   totalPages?: number;
+  borderNone?: string;
 }
 
 interface ExtendedTableState<T extends object> extends TableState<T> {
@@ -27,6 +28,7 @@ const Table = <T extends object>({
   data,
   setPage,
   totalPages,
+  borderNone = "",
 }: TableProps<T>) => {
   const {
     getTableProps,
@@ -76,7 +78,7 @@ const Table = <T extends object>({
                   <tr
                     {...row.getRowProps()}
                     key={idx}
-                    className="border-b border-[#CCD2D9] h-[130px]"
+                    className={`border-b border-[#CCD2D9] h-[130px] ${borderNone}`}
                   >
                     {row.cells.map((cell, idx) => {
                       return (

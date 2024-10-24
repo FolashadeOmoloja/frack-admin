@@ -64,3 +64,11 @@ export interface JobPosted {
   updatedAt: string;
   skills: string[];
 }
+
+export interface Applicants {
+  _id: string;
+  job: string;
+  status: string;
+  createdAt: string;
+  talent: userObject;
+}

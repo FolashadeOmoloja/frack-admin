@@ -6,9 +6,11 @@ import { Column } from "react-table";
 const MainTable = <T extends object>({
   columns,
   data,
+  borderNone = "",
 }: {
   columns: Column<T>[];
   data: T[];
+  borderNone?: string;
 }) => {
   const [page, setPage] = useState(0);
   const itemsPerPage = 5;
@@ -36,6 +38,7 @@ const MainTable = <T extends object>({
         columns={columns}
         setPage={setPage}
         totalPages={displayTotalPages > 1 ? displayTotalPages : 0}
+        borderNone={borderNone}
       />
     </>
   );

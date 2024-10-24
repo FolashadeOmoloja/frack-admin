@@ -1,5 +1,10 @@
 import { Column } from "react-table";
-import { userCompanyObject, userObject, JobPosted } from "./typeDefs";
+import {
+  userCompanyObject,
+  userObject,
+  JobPosted,
+  Applicants,
+} from "./typeDefs";
 import { DownloadResumeBotton } from "@/components/Elements/ProfileBox";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -9,6 +14,7 @@ import { setCompany } from "@/redux/slices/companySlice";
 import { formatTimeDifference } from "./constants";
 import { setJob } from "@/redux/slices/jobSlice";
 import { useDeleteCompanyJob } from "@/hooks/jobPosts-hook";
+import ApplicantsCard from "@/components/Elements/ApplicantsCard";
 
 export const talentsColumn: Column<userObject>[] = [
   {
@@ -549,6 +555,17 @@ export const singleCompClosedJobsColumns: Column<JobPosted>[] = [
           backGround="bg-[#22CCED]"
         />
       );
+    },
+  },
+];
+
+export const ApplicationsColumns: Column<Applicants>[] = [
+  {
+    Header: "",
+    accessor: "talent",
+    Cell: ({ row }: { row: { index: number; original: Applicants } }) => {
+      const postDate = formatTimeDifference(row.original.createdAt);
+      return <ApplicantsCard item={row.original} idx={row.index} />;
     },
   },
 ];

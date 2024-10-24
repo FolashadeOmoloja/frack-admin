@@ -1,7 +1,5 @@
 import { JOB_API_END_POINT } from "@/utilities/constants/constants";
 import { setLoading } from "@/redux/slices/authSlice";
-import { setNotification } from "@/redux/slices/notificationSlice";
-import { ADMIN_API_END_POINT } from "@/utilities/constants/constants";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

@@ -68,6 +68,26 @@ const ProfileDetails = <T extends boolean>({
     }
   };
 
+  const onTalentSubmit = (data: any) => {
+    const meetingUrl = data.meetingUrl.trim();
+    const sanitizedMeetingUrl = validator.isURL(meetingUrl) ? meetingUrl : "#";
+    const senderMessage = `
+    You sent a notification to <b>${(user as userObject).firstName} ${
+      (user as userObject).lastName
+    }</b> 
+    to pick an available time for an interview.<br /> 
+    Here is the meeting link: <a href="${sanitizedMeetingUrl}" target="_blank">Click here</a>
+  `;
+    const receiverMessage = `We would like to meet with your team to discuss your hiring needs. Please select a convenient date and time for the meeting by using the following link:\n <a href="${sanitizedMeetingUrl}" target="_blank">Click here</a>`;
+
+    sendNotification(
+      (user as userObject)._id,
+      senderMessage,
+      receiverMessage,
+      sanitizedMeetingUrl
+    );
+  };
+
   const onSubmit = (data: any) => {
     const meetingUrl = data.meetingUrl.trim();
     const sanitizedMeetingUrl = validator.isURL(meetingUrl) ? meetingUrl : "#";
@@ -130,6 +150,79 @@ const ProfileDetails = <T extends boolean>({
               title={"Primary Skills to offer"}
               details={`${(user as userObject)?.skills.join(",")} `}
             />
+            {!schedulePrompt ? (
+              <div>
+                <button
+                  className="py-4 px-6 bg-[#000080] text-white rounded-md font-semibold mt-6 btn-hover"
+                  onClick={() => setSchedulePrompt(true)}
+                >
+                  Schedule a Meeting
+                </button>
+                <span className="text-sm mt-3 w-full text-[#000080] font-semibold  italic block">
+                  (Schedule Meeting with talent and notify)
+                </span>
+              </div>
+            ) : (
+              <div>
+                <div className="flex lg:gap-5 gap-0 max-lg:flex-col ">
+                  <a ref={linkRef} style={{ display: "none" }} target="_blank">
+                    hidden download link
+                  </a>
+                  <button
+                    className="py-4 px-9 bg-[#22CCED] text-white rounded-md font-semibold mt-6 btn-hover hover:bg-[#22cbedb2] max-w-[180px]"
+                    onClick={openCalendly}
+                  >
+                    Schedule
+                  </button>
+                  <button
+                    className="py-4 px-9 bg-[#000080] text-white rounded-md font-semibold mt-6 btn-hover max-w-[180px]"
+                    onClick={() => setNotifyPrompt(true)}
+                  >
+                    Notify
+                  </button>
+                  <button
+                    className="py-4 px-9 bg-[#000080] text-white rounded-md font-semibold mt-6 btn-hover max-w-[180px]"
+                    onClick={() => {
+                      setSchedulePrompt(false);
+                      setNotifyPrompt(false);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <span className="text-sm mt-3 w-full text-[#000080] font-semibold  italic block">
+                  (Schedule Meeting with talent and notify)
+                </span>
+              </div>
+            )}
+            {notifyPrompt && (
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="flex gap-3 formdivs mt-4">
+                  <input
+                    type="url"
+                    placeholder="Enter calendly meeting link"
+                    {...register("meetingUrl", {
+                      required: validationRules.url.required,
+                      pattern: validationRules.url.pattern,
+                    })}
+                  />
+                  <button
+                    type="submit"
+                    className="basis-[20%] p-3 bg-[#000080] text-white shadow-sm rounded-lg btn-hover"
+                    disabled={isSubmitting}
+                  >
+                    {loading ? (
+                      <div className="flex items-center justify-center">
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        loading
+                      </div>
+                    ) : (
+                      "Notify"
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
             {!deletePrompt ? (
               <div>
                 <button
