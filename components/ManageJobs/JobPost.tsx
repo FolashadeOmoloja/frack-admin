@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { setCompany } from "@/redux/slices/companySlice";
 import { useRouter } from "next/navigation";
 import { useGetApplicants } from "@/hooks/application-hook";
+import { setJob } from "@/redux/slices/jobSlice";
 
 const JobPost = ({ jobData }: { jobData: JobPosted }) => {
   const { companies } = useGetAllCompanies();
@@ -26,6 +27,7 @@ const JobPost = ({ jobData }: { jobData: JobPosted }) => {
   };
 
   const viewApplications = () => {
+    dispatch(setJob(jobData));
     fetchApplicants(jobData._id);
   };
   return (

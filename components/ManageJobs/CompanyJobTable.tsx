@@ -23,7 +23,7 @@ const CompanyJobTable = () => {
   const [active, setActive] = useState<IsActiveState>({ 0: true });
   const [changeTable, setChangeTable] = useState(0);
   const router = useRouter();
-  const companyName = jobs[0].company.companyName;
+  const companyName = jobs[0]?.company?.companyName;
 
   // Function to filter jobs based on status
   const filterJobs = (status: string) => {

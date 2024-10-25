@@ -16,7 +16,7 @@ type IsActiveState = {
 };
 
 const JobTable = () => {
-  const filterArr = ["Active Jobs", "Closed Jobs", "Hired Talents"];
+  const filterArr = ["Active Jobs", "Closed Jobs"];
   const { jobs, loading } = useGetAllJobs();
   const [active, setActive] = useState<IsActiveState>({ 0: true });
   const [changeTable, setChangeTable] = useState(0);
@@ -33,7 +33,6 @@ const JobTable = () => {
   // Recalculate the jobs when `jobs` or `changeTable` changes
   const openedJobs = changeTable === 0 ? filterJobs("open") : [];
   const closedJobs = changeTable === 1 ? filterJobs("closed") : [];
-  const hiredCandidates: string | any[] = [];
 
   const activeFunc = (idx: number) => {
     const newState: IsActiveState = {};

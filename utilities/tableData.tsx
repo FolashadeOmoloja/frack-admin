@@ -4,6 +4,7 @@ import {
   userObject,
   JobPosted,
   Applicants,
+  SuccessApplications,
 } from "./typeDefs";
 import { DownloadResumeBotton } from "@/components/Elements/ProfileBox";
 import { useDispatch } from "react-redux";
@@ -566,6 +567,124 @@ export const ApplicationsColumns: Column<Applicants>[] = [
     Cell: ({ row }: { row: { index: number; original: Applicants } }) => {
       const postDate = formatTimeDifference(row.original.createdAt);
       return <ApplicantsCard item={row.original} idx={row.index} />;
+    },
+  },
+];
+
+{
+  /* <div className="flex flex-col gap-3 items-center justify-center">
+<div className="p-7">
+  <div
+    className="h-[60px] w-[50px] rounded-full overflow-hidden "
+    style={{ width: "50px", height: "50px" }}
+  >
+    {row.original.company.profileImage ? (
+      <img
+        src={row.original.company.profileImage}
+        alt=""
+        className="object-center"
+      />
+    ) : (
+      <section
+        className={`w-[50px] h-[50px]  text-xl text-white  font-bold centered bg-[#000080]`}
+      >
+        {row.original.company.companyName[0]}
+      </section>
+    )}
+  </div>
+</div>
+<span>{row.original.company.companyName}</span>
+</div> */
+}
+
+export const successHireColumns: Column<SuccessApplications>[] = [
+  {
+    Header: "",
+    accessor: "job",
+    Cell: ({ row }: { row: { original: SuccessApplications } }) => {
+      return (
+        <div className="flex flex-col gap-2">
+          <span>{row.original.job.title}</span>
+          <div className="flex flex-col gap-4 text-base">
+            <span>{row.original.job.company.companyName}</span>
+            <span>
+              {row.original.job.company.location},{" "}
+              {row.original.job.company.country}{" "}
+            </span>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "talent",
+    Cell: ({ row }: { row: { original: SuccessApplications } }) => {
+      return (
+        <section className="flex flex-col gap-3 ">
+          <div className="p-7">
+            <div
+              className="h-[60px] w-[50px] rounded-full overflow-hidden "
+              style={{ width: "50px", height: "50px" }}
+            >
+              {row.original.talent.profileImage ? (
+                <img
+                  src={row.original.talent.profileImage}
+                  alt=" "
+                  className="object-center"
+                />
+              ) : (
+                <section
+                  className={`w-[50px] h-[50px]  text-xl text-white  font-bold centered bg-[#000080]`}
+                >
+                  {row.original.talent.firstName[0]}
+                </section>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <p>
+              <span className="font-semibold">Name: </span>{" "}
+              {row.original.talent.firstName}
+              {row.original.talent.lastName}
+            </p>
+            <p>
+              <span className="font-semibold">
+                Profession: {row.original.talent.profession}
+              </span>
+            </p>
+          </div>
+        </section>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "status",
+    Cell: ({ row }: { row: { original: SuccessApplications } }) => {
+      return (
+        <div className="flex flex-col gap-2">
+          <p>
+            {" "}
+            <span className="font-semibold">Industry: </span>
+            {row.original.talent.industry}
+          </p>
+          <p>
+            {" "}
+            <span className="font-semibold">Level: </span>
+            {row.original.talent.experienceLevel}
+          </p>
+          <p>
+            {" "}
+            <span className="font-semibold">Experience: </span>
+            {row.original.talent.experienceYears}
+          </p>
+          <p>
+            <span className="font-semibold">Location: </span>
+            {row.original.talent.location}, {row.original.talent.country}{" "}
+          </p>
+        </div>
+      );
     },
   },
 ];

@@ -1,5 +1,5 @@
 export type userObject = {
-  _id: String;
+  _id: string;
   firstName: string;
   lastName: string;
   profileImage: string | null; // Use '|' for union types
@@ -68,6 +68,14 @@ export interface JobPosted {
 export interface Applicants {
   _id: string;
   job: string;
+  status: string;
+  createdAt: string;
+  talent: userObject;
+}
+
+export interface SuccessApplications {
+  _id: string;
+  job: JobPosted;
   status: string;
   createdAt: string;
   talent: userObject;

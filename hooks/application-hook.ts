@@ -3,6 +3,7 @@ import { setLoading } from "@/redux/slices/authSlice";
 import { APPLICATION_API_END_POINT } from "@/utilities/constants/constants";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
@@ -43,6 +44,39 @@ export const useGetApplicants = () => {
   };
 
   return { fetchApplicants, loading };
+};
+
+export const useGetAllEmployed = () => {
+  const dispatch = useDispatch();
+
+  const [successApplications, setSuccessApplications] = useState([]);
+  const { loading } = useSelector((store: any) => store.auth);
+  useEffect(() => {
+    const fetchApplicants = async () => {
+      dispatch(setLoading(true));
+      try {
+        const response = await axios.get(
+          `${APPLICATION_API_END_POINT}/get-hired-applicants`,
+          {
+            withCredentials: true,
+          }
+        );
+        setSuccessApplications(response.data.employed);
+      } catch (error: any) {
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "Failed to fetch talents";
+        toast.error(errorMessage);
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+
+    fetchApplicants();
+  }, []);
+
+  return { successApplications, loading };
 };
 
 export const updateApplicationStatus = () => {

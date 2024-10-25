@@ -21,11 +21,7 @@ const JobPost = ({
   const dispatch = useDispatch();
   const deleteClosedJob = () => {
     deleteJob(jobData.company._id, jobData._id);
-    if (update) {
-      dispatch(setCompanyJobs(updatedJobs));
-      console.log(updatedJobs);
-      console.log("hi");
-    }
+    dispatch(setCompanyJobs(updatedJobs));
     router.push(href);
   };
   return (
