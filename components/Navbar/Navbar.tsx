@@ -7,8 +7,8 @@ const NavLinks = [
     href: "/control-room",
   },
   {
-    navItem: "Jobs",
-    href: "/hire-talent/dashboard/my-jobs",
+    navItem: "Blog",
+    href: "/control-room/manage-blogs",
   },
 ];
 
