@@ -8,11 +8,15 @@ import {
   useDeleteTalentProfile,
 } from "@/hooks/admin-analytics-hook";
 import { useGetCompanyJobs } from "@/hooks/jobPosts-hook";
-import { handleSendCompanyNotification } from "@/hooks/notification-hook";
+import {
+  handleSendCompanyNotification,
+  handleSendTalentNotification,
+} from "@/hooks/notification-hook";
 import { userObject, userCompanyObject } from "@/utilities/typeDefs";
 import { Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 import validator from "validator";
 
 type ProfileDetailsProps<T extends boolean> = {
@@ -41,7 +45,9 @@ const ProfileDetails = <T extends boolean>({
   const { fetchJobs } = useGetCompanyJobs();
   const { onSubmit: sendNotification, loading } =
     handleSendCompanyNotification();
+  const { onSubmit: sendTalentNotification } = handleSendTalentNotification();
   const { onSubmit: deleteCompany } = useDeleteCompanyProfile();
+  const { job } = useSelector((store: any) => store.job);
   const deleteProfile = () => {
     deleteTalent((user as userObject)._id);
   };
@@ -75,12 +81,20 @@ const ProfileDetails = <T extends boolean>({
     You sent a notification to <b>${(user as userObject).firstName} ${
       (user as userObject).lastName
     }</b> 
-    to pick an available time for an interview.<br /> 
+    to pick an available time for an interview ${
+      job.length > 0
+        ? `for the ${job.title} role at ${job.company.companyName}`
+        : ""
+    }.<br /> 
     Here is the meeting link: <a href="${sanitizedMeetingUrl}" target="_blank">Click here</a>
   `;
-    const receiverMessage = `We would like to meet with your team to discuss your hiring needs. Please select a convenient date and time for the meeting by using the following link:\n <a href="${sanitizedMeetingUrl}" target="_blank">Click here</a>`;
+    const receiverMessage = `You have been shorlisted ${
+      job.length > 0
+        ? `for the ${job.title} role at ${job.company.companyName}`
+        : ""
+    }. Please select a convenient date and time for the meeting by using the following link:\n <a href="${sanitizedMeetingUrl}" target="_blank">Click here</a>`;
 
-    sendNotification(
+    sendTalentNotification(
       (user as userObject)._id,
       senderMessage,
       receiverMessage,
@@ -101,7 +115,7 @@ const ProfileDetails = <T extends boolean>({
     const receiverMessage = `We would like to meet with your team to discuss your hiring needs. Please select a convenient date and time for the meeting by using the following link:\n <a href="${sanitizedMeetingUrl}" target="_blank">Click here</a>`;
 
     sendNotification(
-      (user as userObject)._id,
+      (user as userCompanyObject)._id,
       senderMessage,
       receiverMessage,
       sanitizedMeetingUrl
@@ -196,7 +210,7 @@ const ProfileDetails = <T extends boolean>({
               </div>
             )}
             {notifyPrompt && (
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form onSubmit={handleSubmit(onTalentSubmit)}>
                 <div className="flex gap-3 formdivs mt-4">
                   <input
                     type="url"

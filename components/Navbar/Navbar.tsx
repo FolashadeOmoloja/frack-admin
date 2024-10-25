@@ -4,7 +4,7 @@ import DashboardMobileNav from "./MobileNav";
 const NavLinks = [
   {
     navItem: "Dashboard",
-    href: "/hire-talent/dashboard",
+    href: "/control-room",
   },
   {
     navItem: "Jobs",
@@ -21,7 +21,7 @@ const DropDown = [
   {
     navItem: "Sign Out",
     icon: "/images/dashboard/icon2.svg",
-    href: "/hire-talent/sign-out",
+    href: "/sign-out",
   },
 ];
 

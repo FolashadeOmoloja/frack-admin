@@ -7,11 +7,22 @@ import { useSelector } from "react-redux";
 const SettingsPage = () => {
   const { loading } = useGetAdminNotifications();
   const { notification } = useSelector((store: any) => store.notification);
-  console.log(notification);
+  const { companyNotifications } = useSelector(
+    (store: any) => store.notification
+  );
+  const { talentNotifications } = useSelector(
+    (store: any) => store.notification
+  );
+
   return (
     <>
       <DashboardNavbar activeItem={0} />
-      <Notifications notifications={notification} loading={loading} />
+      <Notifications
+        notifications={notification}
+        loading={loading}
+        companyNotifications={companyNotifications}
+        talentNotifications={talentNotifications}
+      />
     </>
   );
 };
