@@ -21,7 +21,7 @@ export const useGetAllBlogPosts = () => {
           },
           withCredentials: true,
         });
-        setBlogPost(response.data.blogPost);
+        setBlogPost(response.data.blogPosts);
       } catch (error: any) {
         const errorMessage =
           error.response?.data?.message ||
@@ -37,4 +37,132 @@ export const useGetAllBlogPosts = () => {
   }, []);
 
   return { blogPosts, loading };
+};
+
+export const CreateBlogPost = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { loading } = useSelector((store: any) => store.auth);
+
+  const onSubmit = async (formData: any) => {
+    dispatch(setLoading(true));
+
+    try {
+      const response = await axios.post(
+        `${BLOG_API_END_POINT}/create-blog`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+
+      const { success, message } = response.data;
+
+      if (success) {
+        router.push("/control-room/manage-blogs");
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "An unknown error occurred.";
+      toast.error(errorMessage);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  return {
+    onSubmit,
+    loading,
+  };
+};
+
+export const EditBlogPost = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { loading } = useSelector((store: any) => store.auth);
+
+  const onSubmit = async (formData: any, id: string) => {
+    dispatch(setLoading(true));
+
+    try {
+      const response = await axios.put(
+        `${BLOG_API_END_POINT}/edit-blog/${id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+
+      const { success, message } = response.data;
+
+      if (success) {
+        router.push("/control-room/manage-blogs");
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "An unknown error occurred.";
+      toast.error(errorMessage);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  return {
+    onSubmit,
+    loading,
+  };
+};
+
+export const DeleteBlogPost = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const onSubmit = async (id: string) => {
+    dispatch(setLoading(true));
+
+    try {
+      const response = await axios.delete(
+        `${BLOG_API_END_POINT}/delete-blog/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      const { success, message } = response.data;
+
+      if (success) {
+        router.push("/control-room/manage-blogs");
+        toast.success(message);
+      } else {
+        toast.error(message);
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "An unknown error occurred.";
+      toast.error(errorMessage);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  return {
+    onSubmit,
+  };
 };

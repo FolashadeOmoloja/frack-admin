@@ -1,5 +1,6 @@
+"use client";
+
 import { useGetAllBlogPosts } from "@/hooks/content-hook";
-import { useEffect, useState } from "react";
 import MainTable from "../Elements/Table/MainTable";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
@@ -23,9 +24,7 @@ const BlogTable = () => {
       <h2 className="text-2xl font-bold mb-1">Manage Frack Blog Posts</h2>
       <span className="text-[#7C8698]">Overview of blog posts on frack</span>
       <div className="flex w-full text-[#000080] md:text-lg font-bold mt-16 border-b-[3px] border-[#000080]">
-        <span className={`tab active max-sm:h-[50px]`}>
-          Completed Hires Review
-        </span>
+        <span className={`tab active max-sm:h-[50px]`}>Frack Blog posts</span>
       </div>
 
       {loading ? (

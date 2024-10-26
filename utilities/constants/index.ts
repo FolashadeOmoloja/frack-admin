@@ -5,6 +5,12 @@ export const validationRules = {
   lastName: {
     required: "Last Name is required",
   },
+  title: {
+    required: "Title is required",
+  },
+  author: {
+    required: "Author fullname is required",
+  },
   email: {
     required: "Email is required",
     pattern: {

@@ -52,9 +52,6 @@ const page = () => {
     }
   });
 
-  console.log("Unique Jobs:", uniqueJobs);
-  console.log("Unique Talents:", uniqueTalents);
-
   const { jobs } = useGetAllJobs();
 
   const filterJobs = (status: string) => {
@@ -118,12 +115,9 @@ const page = () => {
     <>
       <DashboardNavbar activeItem={0} />
       <DashboardLayout
-        dashInfo="This provides a summary of your application details"
+        dashInfo="This provides a summary of your Frack details"
         analytics={companyAnalytics}
         link2="/hire-talent/dashboard/my-jobs"
-        link1="/hire-talent/dashboard/profile"
-        status1="Recruit"
-        status2="Remote/hybrid"
       />
     </>
   );

@@ -10,19 +10,11 @@ type analytics = {
 const DashboardLayout = ({
   dashInfo,
   analytics,
-  link1,
   link2,
-  status1,
-  status2,
-  className = "",
 }: {
   dashInfo: string;
   analytics: analytics;
-  link1: string;
   link2: string;
-  status1: string;
-  status2: string;
-  className?: string;
 }) => {
   return (
     <section className="dashboard-container flex gap-10 max-md:flex-col">
@@ -33,28 +25,19 @@ const DashboardLayout = ({
       </section>
       <aside className="md:basis-[25%] flex flex-col gap-7">
         <DashCards
-          gif="/images/dashboard/profile.gif"
-          title={"Profile Status:"}
-          status={status1}
-          link={link1}
-          linkName={"View Profile"}
-          className={className}
+          title="Blog Posts"
+          link="/control-room/manage-blogs"
+          linkName="Manage blog-posts"
         />
         <DashCards
-          gif="/images/dashboard/suitcase.gif"
           title={"Work mode preference"}
-          status={status2}
           link={link2}
           linkName={"Check My Jobs"}
-          className={className}
         />
         <DashCards
-          gif="/images/dashboard/message.gif"
           title={"Have an idea you’d like to share?"}
-          status={""}
           link={"hire-talent/dashboard/contact"}
           linkName={"Send us a message"}
-          className={className}
         />
       </aside>
     </section>
