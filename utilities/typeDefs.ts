@@ -80,3 +80,20 @@ export interface SuccessApplications {
   createdAt: string;
   talent: userObject;
 }
+
+export interface SuccessApplications {
+  _id: string;
+  job: JobPosted;
+  status: string;
+  createdAt: string;
+  talent: userObject;
+}
+export interface BlogPosts {
+  _id: string;
+  title: string;
+  author: string;
+  blogImage: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}

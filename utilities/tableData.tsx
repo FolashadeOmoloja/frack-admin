@@ -5,6 +5,7 @@ import {
   JobPosted,
   Applicants,
   SuccessApplications,
+  BlogPosts,
 } from "./typeDefs";
 import { DownloadResumeBotton } from "@/components/Elements/ProfileBox";
 import { useDispatch } from "react-redux";
@@ -16,6 +17,7 @@ import { formatTimeDifference } from "./constants";
 import { setJob } from "@/redux/slices/jobSlice";
 import { useDeleteCompanyJob } from "@/hooks/jobPosts-hook";
 import ApplicantsCard from "@/components/Elements/ApplicantsCard";
+import { setblogPost } from "@/redux/slices/blogPostslice";
 
 export const talentsColumn: Column<userObject>[] = [
   {
@@ -571,32 +573,6 @@ export const ApplicationsColumns: Column<Applicants>[] = [
   },
 ];
 
-{
-  /* <div className="flex flex-col gap-3 items-center justify-center">
-<div className="p-7">
-  <div
-    className="h-[60px] w-[50px] rounded-full overflow-hidden "
-    style={{ width: "50px", height: "50px" }}
-  >
-    {row.original.company.profileImage ? (
-      <img
-        src={row.original.company.profileImage}
-        alt=""
-        className="object-center"
-      />
-    ) : (
-      <section
-        className={`w-[50px] h-[50px]  text-xl text-white  font-bold centered bg-[#000080]`}
-      >
-        {row.original.company.companyName[0]}
-      </section>
-    )}
-  </div>
-</div>
-<span>{row.original.company.companyName}</span>
-</div> */
-}
-
 export const successHireColumns: Column<SuccessApplications>[] = [
   {
     Header: "",
@@ -684,6 +660,53 @@ export const successHireColumns: Column<SuccessApplications>[] = [
             {row.original.talent.location}, {row.original.talent.country}{" "}
           </p>
         </div>
+      );
+    },
+  },
+];
+export const blogPostColumns: Column<BlogPosts>[] = [
+  {
+    Header: "",
+    accessor: "title",
+    Cell: ({ row }: { row: { original: BlogPosts } }) => {
+      const postDate = formatTimeDifference(
+        row.original.createdAt || row.original.updatedAt
+      );
+      return (
+        <div className="flex flex-col gap-4">
+          <span>{row.original.title}</span>
+          <div className="flex flex-col gap-2 text-base">
+            <span>{row.original.author}</span>
+            <p>
+              <span className="font-semibold">Created/Updated: </span>
+              {postDate}
+            </p>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "content",
+    Cell: ({ row }: { row: { index: number; original: BlogPosts } }) => {
+      const dispatch = useDispatch();
+      const router = useRouter();
+      const editBlog = (id: any, data: any) => {
+        const encodedId = btoa(id);
+        dispatch(setblogPost(data));
+        router.push(`/control-room/manage-blogs/${encodedId}`);
+      };
+
+      return (
+        <CTABTN
+          route={``}
+          isFunc
+          func={() => editBlog(row.original._id, row.original)}
+          CTA="Edit"
+          height2="h-[50px] text-sm"
+          backGround="bg-[#22CCED]"
+        />
       );
     },
   },
