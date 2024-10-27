@@ -15,7 +15,7 @@ const BlogTable = () => {
   return (
     <section className="dashboard-container min-h-svh">
       <div
-        onClick={() => router.back()}
+        onClick={() => router.push("/control-room")}
         className="flex text-[#000080] gap-3 text-xl items-center font-bold mb-6 cursor-pointer"
       >
         <FaArrowLeft />

@@ -8,6 +8,15 @@ export const validationRules = {
   title: {
     required: "Title is required",
   },
+  fullname: {
+    required: "Fullname is required",
+  },
+  role: {
+    required: "Role is required",
+  },
+  review: {
+    required: "This is required",
+  },
   author: {
     required: "Author fullname is required",
   },

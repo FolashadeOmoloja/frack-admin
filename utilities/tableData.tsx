@@ -6,6 +6,8 @@ import {
   Applicants,
   SuccessApplications,
   BlogPosts,
+  Reviews,
+  Faqs,
 } from "./typeDefs";
 import { DownloadResumeBotton } from "@/components/Elements/ProfileBox";
 import { useDispatch } from "react-redux";
@@ -18,6 +20,8 @@ import { setJob } from "@/redux/slices/jobSlice";
 import { useDeleteCompanyJob } from "@/hooks/jobPosts-hook";
 import ApplicantsCard from "@/components/Elements/ApplicantsCard";
 import { setblogPost } from "@/redux/slices/blogPostslice";
+import { setReview } from "@/redux/slices/reviewSlice";
+import { setFaq } from "@/redux/slices/faqSlice";
 
 export const talentsColumn: Column<userObject>[] = [
   {
@@ -670,7 +674,7 @@ export const blogPostColumns: Column<BlogPosts>[] = [
     accessor: "title",
     Cell: ({ row }: { row: { original: BlogPosts } }) => {
       const postDate = formatTimeDifference(
-        row.original.createdAt || row.original.updatedAt
+        row.original.updatedAt || row.original.createdAt
       );
       return (
         <div className="flex flex-col gap-4">
@@ -678,7 +682,7 @@ export const blogPostColumns: Column<BlogPosts>[] = [
           <div className="flex flex-col gap-2 text-base">
             <span>{row.original.author}</span>
             <p>
-              <span className="font-semibold">Created/Updated: </span>
+              <span className="font-semibold">Created: </span>
               {postDate}
             </p>
           </div>
@@ -703,6 +707,98 @@ export const blogPostColumns: Column<BlogPosts>[] = [
           route={``}
           isFunc
           func={() => editBlog(row.original._id, row.original)}
+          CTA="Edit"
+          height2="h-[50px] text-sm"
+          backGround="bg-[#22CCED]"
+        />
+      );
+    },
+  },
+];
+
+export const reviewColumns: Column<Reviews>[] = [
+  {
+    Header: "",
+    accessor: "review",
+    Cell: ({ row }: { row: { original: Reviews } }) => {
+      const postDate = formatTimeDifference(row.original.createdAt);
+      return (
+        <div className="flex flex-col gap-4">
+          <span>{row.original.review}</span>
+          <div className="flex flex-col gap-2 text-base">
+            <span>{row.original.fullname}</span>
+            <span>{row.original.role}</span>
+            <p>
+              <span className="font-semibold">Created: </span>
+              {postDate}
+            </p>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "role",
+    Cell: ({ row }: { row: { index: number; original: Reviews } }) => {
+      const dispatch = useDispatch();
+      const router = useRouter();
+      const editReview = (id: any, data: any) => {
+        const encodedId = btoa(id);
+        dispatch(setReview(data));
+        router.push(`/control-room/manage-reviews/${encodedId}`);
+      };
+
+      return (
+        <CTABTN
+          route={``}
+          isFunc
+          func={() => editReview(row.original._id, row.original)}
+          CTA="Edit"
+          height2="h-[50px] text-sm"
+          backGround="bg-[#22CCED]"
+        />
+      );
+    },
+  },
+];
+export const faqColumns: Column<Faqs>[] = [
+  {
+    Header: "",
+    accessor: "question",
+    Cell: ({ row }: { row: { original: Faqs } }) => {
+      const postDate = formatTimeDifference(row.original.createdAt);
+      return (
+        <div className="flex flex-col gap-4 text-base">
+          <span>{row.original.question}</span>
+          <div className="font-normal ">
+            <span>{row.original.answer}</span>
+            <p>
+              <span className="font-semibold">Created: </span>
+              {postDate}
+            </p>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "img",
+    Cell: ({ row }: { row: { index: number; original: Faqs } }) => {
+      const dispatch = useDispatch();
+      const router = useRouter();
+      const editFaq = (id: any, data: any) => {
+        const encodedId = btoa(id);
+        dispatch(setFaq(data));
+        router.push(`/control-room/manage-faqs/${encodedId}`);
+      };
+
+      return (
+        <CTABTN
+          route={``}
+          isFunc
+          func={() => editFaq(row.original._id, row.original)}
           CTA="Edit"
           height2="h-[50px] text-sm"
           backGround="bg-[#22CCED]"

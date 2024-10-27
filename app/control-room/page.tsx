@@ -117,7 +117,6 @@ const page = () => {
       <DashboardLayout
         dashInfo="This provides a summary of your Frack details"
         analytics={companyAnalytics}
-        link2="/hire-talent/dashboard/my-jobs"
       />
     </>
   );

@@ -10,6 +10,14 @@ const NavLinks = [
     navItem: "Blog",
     href: "/control-room/manage-blogs",
   },
+  {
+    navItem: "Reviews",
+    href: "/control-room/manage-reviews",
+  },
+  {
+    navItem: "Faqs",
+    href: "/control-room/manage-faqs",
+  },
 ];
 
 const DropDown = [

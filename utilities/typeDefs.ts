@@ -97,3 +97,18 @@ export interface BlogPosts {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Reviews {
+  _id: string;
+  fullname: string;
+  role: string;
+  review: string;
+  createdAt: string;
+}
+export interface Faqs {
+  _id: string;
+  img: string;
+  question: string;
+  answer: string;
+  createdAt: string;
+}

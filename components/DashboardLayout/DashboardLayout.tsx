@@ -10,11 +10,9 @@ type analytics = {
 const DashboardLayout = ({
   dashInfo,
   analytics,
-  link2,
 }: {
   dashInfo: string;
   analytics: analytics;
-  link2: string;
 }) => {
   return (
     <section className="dashboard-container flex gap-10 max-md:flex-col">
@@ -30,14 +28,19 @@ const DashboardLayout = ({
           linkName="Manage blog-posts"
         />
         <DashCards
-          title={"Work mode preference"}
-          link={link2}
-          linkName={"Check My Jobs"}
+          title="Reviews"
+          link="/control-room/manage-reviews"
+          linkName="Manage reviews"
         />
         <DashCards
-          title={"Have an idea you’d like to share?"}
-          link={"hire-talent/dashboard/contact"}
-          linkName={"Send us a message"}
+          title="FAQs"
+          link="/control-room/manage-gaqs"
+          linkName="Manage FAQs"
+        />
+        <DashCards
+          title="Filters"
+          link="/control-room/manage-filters"
+          linkName="Manage frack filters/dropdowns"
         />
       </aside>
     </section>
