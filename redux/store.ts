@@ -9,6 +9,7 @@ import applicationSlice from "./slices/applicationSlice";
 import blogPostSlice from "./slices/blogPostslice";
 import reviewSlice from "./slices/reviewSlice";
 import faqSlice from "./slices/faqSlice";
+import filterSlice from "./slices/filterSlice";
 import {
   persistStore,
   persistReducer,
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
   blogPost: blogPostSlice,
   review: reviewSlice,
   faq: faqSlice,
+  filters: filterSlice,
 });
 
 // Persisting the combined reducers

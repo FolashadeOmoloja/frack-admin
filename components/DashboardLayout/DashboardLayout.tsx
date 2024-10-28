@@ -34,7 +34,7 @@ const DashboardLayout = ({
         />
         <DashCards
           title="FAQs"
-          link="/control-room/manage-gaqs"
+          link="/control-room/manage-faqs"
           linkName="Manage FAQs"
         />
         <DashCards

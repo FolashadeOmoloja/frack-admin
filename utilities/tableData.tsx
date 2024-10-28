@@ -770,9 +770,9 @@ export const faqColumns: Column<Faqs>[] = [
       const postDate = formatTimeDifference(row.original.createdAt);
       return (
         <div className="flex flex-col gap-4 text-base">
-          <span>{row.original.question}</span>
+          <span>Q: {row.original.question}</span>
           <div className="font-normal ">
-            <span>{row.original.answer}</span>
+            <span>A: {row.original.answer}</span>
             <p>
               <span className="font-semibold">Created: </span>
               {postDate}

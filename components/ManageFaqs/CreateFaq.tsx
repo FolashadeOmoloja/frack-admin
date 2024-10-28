@@ -2,11 +2,25 @@
 import { Loader2 } from "lucide-react";
 import { validationRules } from "@/utilities/constants";
 import { useForm } from "react-hook-form";
-import { CreateReview } from "@/hooks/info-hook";
+import { CreateFaq } from "@/hooks/info-hook";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 
-const CreateReviewBox = () => {
+const imgArr = [
+  "images/homepage/icon.svg",
+  "images/homepage/icon1.svg",
+  "images/homepage/icon2.svg",
+  "images/homepage/icon3.svg",
+  "images/homepage/icon4.svg",
+  "images/homepage/icon5.svg",
+];
+
+function getRandomImg() {
+  const randomIndex = Math.floor(Math.random() * imgArr.length);
+  return imgArr[randomIndex];
+}
+
+const CreateFaqBox = () => {
   const {
     handleSubmit,
     register,
@@ -15,16 +29,17 @@ const CreateReviewBox = () => {
 
   const router = useRouter();
 
-  const { onSubmit: Create, loading } = CreateReview();
+  const { onSubmit: Create, loading } = CreateFaq();
 
   const onSubmit = (data: any) => {
+    const image = getRandomImg();
     if (data) {
-      const review = {
-        fullname: data.fullname.trim(),
-        role: data.role.trim(),
-        review: data.review.trim(),
+      const faq = {
+        question: data.question.trim(),
+        answer: data.answer.trim(),
+        img: image,
       };
-      Create(review);
+      Create(faq);
     }
   };
 
@@ -37,7 +52,7 @@ const CreateReviewBox = () => {
         <FaArrowLeft />
         <span>Go back</span>
       </div>
-      <h2 className="text-2xl font-bold mb-1">Create New Review</h2>
+      <h2 className="text-2xl font-bold mb-1">Create New Faq</h2>
       <section className="flex justify-center w-full">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -47,59 +62,44 @@ const CreateReviewBox = () => {
             <span
               className={`tab active max-sm:h-[50px] text-xl w-full xsm:w-[200px]`}
             >
-              Review Details
+              Faq Details
             </span>
           </div>
           <p className="text-gray-500 text-lg mt-9">Fill the form below</p>
           <section className="mt-8">
             <div className="flex formdivs flex-col mb-4 sm:mb-5 gap-[6px]">
               <label>
-                Full Name <span className="text-red-600 text-base">*</span>
+                Question <span className="text-red-600 text-base">*</span>
               </label>
               <input
                 type="text"
-                placeholder="Fullname of reviewer"
-                {...register("fullname", {
-                  required: validationRules.fullname.required,
+                placeholder="Enter faq question"
+                {...register("question", {
+                  required: validationRules.question.required,
                 })}
               />
-              {errors.fullname && (
-                <span className="text-red-600 text-sm">{`${errors.fullname.message}`}</span>
+              {errors.question && (
+                <span className="text-red-600 text-sm">{`${errors.question.message}`}</span>
               )}
             </div>
             <div className="flex formdivs flex-col mb-4 sm:mb-5 gap-[6px]">
               <label>
-                Role <span className="text-red-600 text-base">*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Role of reviewer e.g CEO"
-                {...register("role", {
-                  required: validationRules.role.required,
-                })}
-              />
-              {errors.role && (
-                <span className="text-red-600 text-sm">{`${errors.role.message}`}</span>
-              )}
-            </div>
-            <div className="flex formdivs flex-col mb-4 sm:mb-5 gap-[6px]">
-              <label>
-                Review <span className="text-red-600 text-base">*</span>
+                Answer <span className="text-red-600 text-base">*</span>
               </label>
               <textarea
-                placeholder="Enter review"
-                {...register("review", {
-                  required: validationRules.review.required,
+                placeholder="Enter faq anwser"
+                {...register("answer", {
+                  required: validationRules.answer.required,
                   maxLength: {
                     value: 1000,
-                    message: "review cannot exceed 1000 words",
+                    message: "This cannot exceed 1000 words",
                   },
                 })}
                 rows={10}
                 className="resize-none"
               />
-              {errors.review && (
-                <span className="text-red-600 text-sm">{`${errors.review.message}`}</span>
+              {errors.answer && (
+                <span className="text-red-600 text-sm">{`${errors.answer.message}`}</span>
               )}
             </div>
 
@@ -114,7 +114,7 @@ const CreateReviewBox = () => {
                   Please wait
                 </div>
               ) : (
-                "Create Review"
+                "Create Faq"
               )}
             </button>
           </section>
@@ -124,4 +124,4 @@ const CreateReviewBox = () => {
   );
 };
 
-export default CreateReviewBox;
+export default CreateFaqBox;

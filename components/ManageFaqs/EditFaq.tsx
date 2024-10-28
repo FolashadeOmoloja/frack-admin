@@ -2,13 +2,13 @@
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { EditReview, DeleteReview } from "@/hooks/info-hook";
+import { EditFaq, DeleteFaq } from "@/hooks/info-hook";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { validationRules } from "@/utilities/constants";
 
-const EditReviewBox = () => {
+const EditFaqBox = () => {
   const {
     handleSubmit,
     register,
@@ -16,38 +16,35 @@ const EditReviewBox = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      _id: "",
-      fullname: "",
-      role: "",
-      review: "",
+      question: "",
+      answer: "",
     },
   });
   const router = useRouter();
-  const { onSubmit: Edit, loading } = EditReview();
-  const { onSubmit: Delete } = DeleteReview();
-  const { review } = useSelector((store: any) => store.review);
+  const { onSubmit: Edit, loading } = EditFaq();
+  const { onSubmit: Delete } = DeleteFaq();
+  const { faq } = useSelector((store: any) => store.faq);
 
   useEffect(() => {
-    if (review) {
-      setValue("fullname", review.fullname);
-      setValue("role", review.role);
-      setValue("review", review.review);
+    if (faq) {
+      setValue("question", faq.question);
+      setValue("answer", faq.answer);
     }
-  }, [review, setValue]);
+  }, [faq, setValue]);
 
   const onSubmit = (data: any) => {
     if (data) {
-      const reviewData = {
-        fullname: data.fullname.trim(),
-        role: data.role.trim(),
-        review: data.review.trim(),
+      const faqData = {
+        question: data.question.trim(),
+        answer: data.answer.trim(),
+        img: faq.img,
       };
-      Edit(reviewData, review._id);
+      Edit(faqData, faq._id);
     }
   };
 
-  const DeleteRev = () => {
-    Delete(review._id);
+  const DeleteData = () => {
+    Delete(faq._id);
   };
 
   return (
@@ -59,7 +56,7 @@ const EditReviewBox = () => {
         <FaArrowLeft />
         <span>Go back</span>
       </div>
-      <h2 className="text-2xl font-bold mb-1">Edit Review</h2>
+      <h2 className="text-2xl font-bold mb-1">Edit Faq</h2>
       <section className="flex justify-center w-full">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -69,59 +66,44 @@ const EditReviewBox = () => {
             <span
               className={`tab active max-sm:h-[50px] text-xl w-full xsm:w-[200px]`}
             >
-              Review Details
+              Faq Details
             </span>
           </div>
           <p className="text-gray-500 text-lg mt-9">Fill the form below</p>
           <section className="mt-8">
             <div className="flex formdivs flex-col mb-4 sm:mb-5 gap-[6px]">
               <label>
-                Full Name <span className="text-red-600 text-base">*</span>
+                Question <span className="text-red-600 text-base">*</span>
               </label>
               <input
                 type="text"
-                placeholder="Fullname of reviewer"
-                {...register("fullname", {
-                  required: validationRules.fullname.required,
+                placeholder="Enter faq question"
+                {...register("question", {
+                  required: validationRules.question.required,
                 })}
               />
-              {errors.fullname && (
-                <span className="text-red-600 text-sm">{`${errors.fullname.message}`}</span>
+              {errors.question && (
+                <span className="text-red-600 text-sm">{`${errors.question.message}`}</span>
               )}
             </div>
             <div className="flex formdivs flex-col mb-4 sm:mb-5 gap-[6px]">
               <label>
-                Role <span className="text-red-600 text-base">*</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Role of reviewer e.g CEO"
-                {...register("role", {
-                  required: validationRules.role.required,
-                })}
-              />
-              {errors.role && (
-                <span className="text-red-600 text-sm">{`${errors.role.message}`}</span>
-              )}
-            </div>
-            <div className="flex formdivs flex-col mb-4 sm:mb-5 gap-[6px]">
-              <label>
-                Review <span className="text-red-600 text-base">*</span>
+                Answer <span className="text-red-600 text-base">*</span>
               </label>
               <textarea
-                placeholder="Enter review"
-                {...register("review", {
-                  required: validationRules.review.required,
+                placeholder="Enter faq anwser"
+                {...register("answer", {
+                  required: validationRules.answer.required,
                   maxLength: {
                     value: 1000,
-                    message: "review cannot exceed 1000 words",
+                    message: "This cannot exceed 1000 words",
                   },
                 })}
                 rows={10}
                 className="resize-none"
               />
-              {errors.review && (
-                <span className="text-red-600 text-sm">{`${errors.review.message}`}</span>
+              {errors.answer && (
+                <span className="text-red-600 text-sm">{`${errors.answer.message}`}</span>
               )}
             </div>
             <div className="mt-20 flex gap-10 max-xsm:gap-5">
@@ -136,12 +118,12 @@ const EditReviewBox = () => {
                     Please wait
                   </div>
                 ) : (
-                  "Edit Review"
+                  "Edit Faq"
                 )}
               </button>
               <div
                 className="login-btn centered gap-3 cursor-pointer icon-animate"
-                onClick={DeleteRev}
+                onClick={DeleteData}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
@@ -149,7 +131,7 @@ const EditReviewBox = () => {
                     Please wait
                   </div>
                 ) : (
-                  "Delete Review"
+                  "Delete Faq"
                 )}
               </div>
             </div>
@@ -160,4 +142,4 @@ const EditReviewBox = () => {
   );
 };
 
-export default EditReviewBox;
+export default EditFaqBox;

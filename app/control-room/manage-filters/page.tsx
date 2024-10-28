@@ -1,11 +1,11 @@
-import FaqTable from "@/components/ManageFaqs/FaqTable";
+import FilterTable from "@/components/ManageFilters/FiltersTable";
 import DashboardNavbar from "@/components/Navbar/Navbar";
 
 const page = () => {
   return (
     <>
-      <DashboardNavbar activeItem={3} />
-      <FaqTable />
+      <DashboardNavbar />
+      <FilterTable />
     </>
   );
 };

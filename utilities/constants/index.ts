@@ -9,7 +9,7 @@ export const validationRules = {
     required: "Title is required",
   },
   fullname: {
-    required: "Fullname is required",
+    required: "Full name is required",
   },
   role: {
     required: "Role is required",
@@ -17,6 +17,13 @@ export const validationRules = {
   review: {
     required: "This is required",
   },
+  question: {
+    required: "This is required",
+  },
+  answer: {
+    required: "This is required",
+  },
+
   author: {
     required: "Author fullname is required",
   },

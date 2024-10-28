@@ -112,3 +112,9 @@ export interface Faqs {
   answer: string;
   createdAt: string;
 }
+export interface Filters {
+  _id: string;
+  skills: [string];
+  country: [string];
+  role: [string];
+}
