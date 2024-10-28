@@ -5,6 +5,7 @@ import { ImCross } from "react-icons/im";
 import CTABTN from "../Elements/CTA-Button";
 import { useRouter } from "next/navigation";
 import UserAvatar from "@/components/Elements/UserAvatar";
+import { useSelector } from "react-redux";
 
 type NavLinks = {
   navItem: string;
@@ -29,6 +30,7 @@ const DashboardMobileNav = ({
 }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useSelector((store: any) => store.auth);
 
   return (
     <nav className="md:hidden relative ">
@@ -87,14 +89,17 @@ const DashboardMobileNav = ({
             <div className="xsm:hidden">
               <UserAvatar dropDown={DropDown} />
             </div>
-            <button
-              className="bg-[#22CCED] h-[55px] rounded-[6px] font-semibold"
-              onClick={() => {
-                router.push(buttonLink);
-              }}
-            >
-              {buttonCta}
-            </button>
+            {user?.accountRole === "SuperAdmin" && (
+              <button
+                className="bg-[#22CCED] h-[55px] rounded-[6px] font-semibold"
+                onClick={() => {
+                  router.push(buttonLink);
+                }}
+              >
+                {buttonCta}
+              </button>
+            )}
+
             <CTABTN width="w-full" route="/sign-out" CTA="Sign Out" />
           </div>
         </section>

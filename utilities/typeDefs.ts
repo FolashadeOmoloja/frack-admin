@@ -118,3 +118,13 @@ export interface Filters {
   country: [string];
   role: [string];
 }
+
+export interface Admin {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  emailAddress: string;
+  password: string;
+  accountRole: string;
+}

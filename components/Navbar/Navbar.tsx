@@ -39,14 +39,14 @@ const DashboardNavbar = ({ activeItem }: { activeItem?: number }) => {
       <DashboardMainNavbar
         activeItem={activeItem}
         NavLinks={NavLinks}
-        buttonLink="/hire-talent/dashboard/add-job"
-        buttonCta="Add Job"
+        buttonLink="/control-room/manage-admins"
+        buttonCta="Manage Admin"
         DropDown={DropDown}
       />
       <DashboardMobileNav
         NavLinks={NavLinks}
-        buttonLink="/hire-talent/dashboard/add-job"
-        buttonCta="Add Job"
+        buttonLink="/control-room/manage-admins"
+        buttonCta="Manage Admin"
         DropDown={DropDown}
       />
     </>

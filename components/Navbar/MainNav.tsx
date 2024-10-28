@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import CTABTN from "@/components/Elements/CTA-Button";
 import UserAvatar from "@/components/Elements/UserAvatar";
+import { useSelector } from "react-redux";
 
 type NavLinks = {
   navItem: string;
@@ -30,6 +31,7 @@ const DashboardMainNavbar = ({
   buttonCta: string;
 }) => {
   const router = useRouter();
+  const { user } = useSelector((store: any) => store.auth);
   return (
     <nav className="fixed inset-0 z-30 flex pl-16 pr-[100px] h-24 max-xlg:pr-[50px] max-xlg:pl-[10px] max-md:hidden bg-white">
       <div className="cursor-pointer" onClick={() => router.push("/")}>
@@ -58,7 +60,9 @@ const DashboardMainNavbar = ({
         })}
       </ul>
       <div className="flex items-center  gap-10">
-        <CTABTN route={buttonLink} CTA={buttonCta} />
+        {user?.accountRole === "SuperAdmin" && (
+          <CTABTN route={buttonLink} CTA={buttonCta} />
+        )}
         <UserAvatar dropDown={DropDown} />
       </div>
     </nav>
