@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import { setFilterLoading } from "@/redux/slices/filterSlice";
 
 export const useGetAllAdmins = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ export const useGetAllAdmins = () => {
           },
           withCredentials: true,
         });
-        setAdmins(response.data.data);
+        setAdmins(response.data.admins);
       } catch (error: any) {
         const errorMessage =
           error.response?.data?.message ||
@@ -132,8 +133,9 @@ export const UpdateAdmin = () => {
 export const DeleteAdmin = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { filterLoading } = useSelector((store: any) => store.filters);
   const onSubmit = async (id: string) => {
-    dispatch(setLoading(true));
+    dispatch(setFilterLoading(true));
 
     try {
       const response = await axios.delete(
@@ -158,12 +160,13 @@ export const DeleteAdmin = () => {
         "An unknown error occurred.";
       toast.error(errorMessage);
     } finally {
-      dispatch(setLoading(false));
+      dispatch(setFilterLoading(false));
     }
   };
 
   return {
     onSubmit,
+    loading: filterLoading,
   };
 };
 

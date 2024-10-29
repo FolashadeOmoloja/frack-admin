@@ -34,6 +34,24 @@ export const validationRules = {
       message: "Invalid email address",
     },
   },
+  mobileNo: {
+    required: "Mobile No. is required",
+    pattern: {
+      value: /^[0-9]/,
+      message: "Invalid phone number",
+    },
+  },
+  password: {
+    required: "Password is required",
+    pattern: {
+      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+      message:
+        "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number",
+    },
+  },
+  accountRole: {
+    required: "This is required",
+  },
 };
 
 export function formatTimeDifference(timestamp: string): string {

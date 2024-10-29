@@ -1,5 +1,5 @@
 "use client";
-import ResetPasswordBox from "@/components/ManageAdmin/ResetPassword";
+import RegisterNewAdmin from "@/components/ManageAdmin/RegisterNewAdmin";
 import DashboardNavbar from "@/components/Navbar/Navbar";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -19,7 +19,7 @@ const page = () => {
   return (
     <>
       <DashboardNavbar />
-      <ResetPasswordBox />
+      <RegisterNewAdmin />
     </>
   );
 };

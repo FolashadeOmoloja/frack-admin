@@ -36,6 +36,10 @@ const Notifications = ({
       <h2 className="text-2xl font-bold mb-1">
         Keep track of Frack notifications
       </h2>
+      <p className="text-gray-600 text-sm mb-4">
+        Note: Deleting notifications here will also remove them from the
+        receiver's notification list permanently.
+      </p>
       <div className="flex w-full text-[#626263] md:text-lg font-bold mt-16 border-b border-[#CCD2D9]">
         {filterArr.map((item, idx) => (
           <span

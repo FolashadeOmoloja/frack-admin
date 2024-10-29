@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import BlogTable from "@/components/ManageBlogs/BlogTable";
 import DashboardNavbar from "@/components/Navbar/Navbar";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import AdminTable from "@/components/ManageAdmin/AdminTable";
 
 const Page = () => {
   const { user } = useSelector((store: any) => store.auth);
@@ -20,8 +20,8 @@ const Page = () => {
 
   return (
     <>
-      <DashboardNavbar activeItem={1} />
-      <BlogTable />
+      <DashboardNavbar />
+      <AdminTable />
     </>
   );
 };

@@ -8,6 +8,7 @@ import {
   BlogPosts,
   Reviews,
   Faqs,
+  Admin,
 } from "./typeDefs";
 import { DownloadResumeBotton } from "@/components/Elements/ProfileBox";
 import { useDispatch } from "react-redux";
@@ -22,6 +23,7 @@ import ApplicantsCard from "@/components/Elements/ApplicantsCard";
 import { setblogPost } from "@/redux/slices/blogPostslice";
 import { setReview } from "@/redux/slices/reviewSlice";
 import { setFaq } from "@/redux/slices/faqSlice";
+import { setAdmin } from "@/redux/slices/adminSlice";
 
 export const talentsColumn: Column<userObject>[] = [
   {
@@ -802,6 +804,80 @@ export const faqColumns: Column<Faqs>[] = [
           CTA="Edit"
           height2="h-[50px] text-sm"
           backGround="bg-[#22CCED]"
+        />
+      );
+    },
+  },
+];
+
+export const adminColumn: Column<Admin>[] = [
+  {
+    Header: "",
+    accessor: "firstName",
+    Cell: ({ row }: { row: { original: Admin } }) => {
+      return (
+        <div className="flex flex-col gap-4 ">
+          <span className="max-slg:text-lg">
+            {row.original.firstName} {row.original.lastName}
+          </span>
+          <span className="text-base font-semibold">
+            {row.original.emailAddress}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "accountRole",
+    Cell: ({ row }: { row: { original: Admin } }) => {
+      return <span>{row.original.accountRole}</span>;
+    },
+  },
+  {
+    Header: "",
+    accessor: "_id",
+    Cell: ({ row }: { row: { index: number; original: Admin } }) => {
+      const dispatch = useDispatch();
+      const router = useRouter();
+      const updateAdmin = (id: any, data: any) => {
+        const encodedId = btoa(id);
+        dispatch(setAdmin(data));
+        router.push(`/control-room/manage-admins/update/${encodedId}`);
+      };
+
+      return (
+        <CTABTN
+          route={``}
+          isFunc
+          func={() => updateAdmin(row.original._id, row.original)}
+          CTA="Update"
+          height2="h-[50px] text-sm"
+          backGround="bg-[#22CCED]"
+        />
+      );
+    },
+  },
+  {
+    Header: "",
+    accessor: "password",
+    Cell: ({ row }: { row: { index: number; original: Admin } }) => {
+      const dispatch = useDispatch();
+      const router = useRouter();
+      const updateAdmin = (id: any, data: any) => {
+        const encodedId = btoa(id);
+        dispatch(setAdmin(data));
+        router.push(`/control-room/manage-admins/reset-password/${encodedId}`);
+      };
+
+      return (
+        <CTABTN
+          route={``}
+          isFunc
+          func={() => updateAdmin(row.original._id, row.original)}
+          CTA="Reset password"
+          height2="h-[50px] text-sm"
+          backGround="bg-[#000080]"
         />
       );
     },
