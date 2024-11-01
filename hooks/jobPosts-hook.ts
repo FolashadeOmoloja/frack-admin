@@ -80,7 +80,6 @@ export const useGetCompanyJobs = () => {
 
 export const useDeleteCompanyJob = () => {
   const { loading } = useSelector((store: any) => store.auth);
-  const [updatedJobs, setUpdatedJobs] = useState([]);
   const dispatch = useDispatch();
 
   const onSubmit = async (id: string, jobId: string) => {
@@ -100,7 +99,7 @@ export const useDeleteCompanyJob = () => {
 
       if (success) {
         toast.success(message);
-        setUpdatedJobs(jobs);
+        dispatch(setCompanyJobs(jobs));
       } else {
         toast.error(message);
       }
@@ -118,6 +117,5 @@ export const useDeleteCompanyJob = () => {
   return {
     onSubmit,
     loading,
-    updatedJobs,
   };
 };

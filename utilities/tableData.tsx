@@ -56,7 +56,7 @@ export const talentsColumn: Column<userObject>[] = [
               <img
                 src={row.original.profileImage}
                 alt=""
-                className="object-center"
+                className="object-center object-cover w-full h-full"
               />
             ) : (
               <section
@@ -153,7 +153,7 @@ export const companyColumn: Column<userCompanyObject>[] = [
               <img
                 src={row.original.profileImage}
                 alt=""
-                className="object-center"
+                className="object-center object-cover w-full h-full"
               />
             ) : (
               <section
@@ -240,7 +240,7 @@ export const companyActiveColumns: Column<JobPosted>[] = [
                 <img
                   src={row.original.company.profileImage}
                   alt=""
-                  className="object-center"
+                  className="object-center object-cover w-full h-full"
                 />
               ) : (
                 <section
@@ -337,7 +337,7 @@ export const closedJobsColumns: Column<JobPosted>[] = [
                 <img
                   src={row.original.company.profileImage}
                   alt=""
-                  className="object-center"
+                  className="object-center object-cover w-full h-full"
                 />
               ) : (
                 <section
@@ -613,7 +613,7 @@ export const successHireColumns: Column<SuccessApplications>[] = [
                 <img
                   src={row.original.talent.profileImage}
                   alt=" "
-                  className="object-center"
+                  className="object-center object-cover w-full h-full"
                 />
               ) : (
                 <section

@@ -107,7 +107,7 @@ const page = () => {
       analtyticsTitle: "Employed Talents",
       stats: uniqueTalents.length != 0 ? uniqueTalents.length : 0,
       desc: `${uniqueJobs.length != 0 ? uniqueJobs.length : 0} Job Categories`,
-      link: "/control-room/review",
+      link: "/control-room/successful-hires",
       linkName: "View Details",
     },
   ];

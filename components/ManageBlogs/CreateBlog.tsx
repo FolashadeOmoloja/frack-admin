@@ -97,7 +97,7 @@ const CreateBlog = () => {
               <label>Choose an image for blog post</label>
               <input
                 type="file"
-                accept="image/*"
+                accept=".webp, .jpg, .jpeg, .png" // Only allow .webp, .jpg, .jpeg, .png files
                 onChange={handleImageChange}
                 className="file:text-white file:rounded-md file:cursor-pointer file:border-0 file:p-2 file:bg-[#000080]"
               />

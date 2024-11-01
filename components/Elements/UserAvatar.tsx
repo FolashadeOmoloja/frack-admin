@@ -40,7 +40,11 @@ const UserAvatar = ({ dropDown }: { dropDown: DropDown }) => {
                 className="gap-4 flex items-center text-[#7C8698] hover:text-[#000080] hover:font-medium transition-all "
                 key={idx}
               >
-                <img src={item.icon} alt="icon" className="w-4 h-4" />
+                <img
+                  src={item.icon}
+                  alt="icon"
+                  className="w-4 h-4 object-center object-cover "
+                />
                 <span>{item.navItem}</span>
               </li>
             ))}

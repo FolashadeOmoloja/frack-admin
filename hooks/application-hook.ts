@@ -1,5 +1,6 @@
 import { setApplication } from "@/redux/slices/applicationSlice";
 import { setLoading } from "@/redux/slices/authSlice";
+import { setSuccessApplicants } from "@/redux/slices/successAplicantsSlice";
 import { APPLICATION_API_END_POINT } from "@/utilities/constants/constants";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -77,6 +78,29 @@ export const useGetAllEmployed = () => {
   }, []);
 
   return { successApplications, loading };
+};
+
+export const useGetAllCompanyEmployed = () => {
+  const dispatch = useDispatch();
+  const fetchApplicants = async (id: any) => {
+    try {
+      const response = await axios.get(
+        `${APPLICATION_API_END_POINT}/get-company-hired-applicants/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch(setSuccessApplicants(response.data.employed));
+      console.log(response.data.employed);
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to fetch talents";
+    }
+  };
+
+  return { fetchApplicants };
 };
 
 export const updateApplicationStatus = () => {

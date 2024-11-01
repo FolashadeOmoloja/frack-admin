@@ -13,7 +13,11 @@ const ProfilePhotoHandler: React.FC<ProfilePhotoProps> = ({ user, talent }) => {
   return (
     <div className="h-[200px] w-[200px] rounded-full overflow-hidden border border-[#000080]">
       {user?.profileImage ? (
-        <img src={user?.profileImage} alt="Profile" className="object-center" />
+        <img
+          src={user?.profileImage}
+          alt="Profile"
+          className="object-center object-cover w-full h-full"
+        />
       ) : (
         <div
           className={`w-full h-full text-white text-8xl font-bold centered`}

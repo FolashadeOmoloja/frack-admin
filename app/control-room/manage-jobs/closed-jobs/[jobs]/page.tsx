@@ -11,7 +11,7 @@ const page = ({ params }: { params: { myJobsId: string } }) => {
       <DashboardNavbar activeItem={0} />
       <ClosedJobPosts
         jobData={job}
-        href="/control-room/manage-companies/jobs"
+        href="/control-room/manage-jobs"
         update={false}
       />
     </>

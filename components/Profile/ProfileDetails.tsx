@@ -7,6 +7,7 @@ import {
   useDeleteCompanyProfile,
   useDeleteTalentProfile,
 } from "@/hooks/admin-analytics-hook";
+import { useGetAllCompanyEmployed } from "@/hooks/application-hook";
 import { useGetCompanyJobs } from "@/hooks/jobPosts-hook";
 import {
   handleSendCompanyNotification,
@@ -43,6 +44,7 @@ const ProfileDetails = <T extends boolean>({
   const [notifyPrompt, setNotifyPrompt] = useState(false);
   const { onSubmit: deleteTalent } = useDeleteTalentProfile();
   const { fetchJobs } = useGetCompanyJobs();
+  const { fetchApplicants } = useGetAllCompanyEmployed();
   const { onSubmit: sendNotification, loading } =
     handleSendCompanyNotification();
   const { onSubmit: sendTalentNotification } = handleSendTalentNotification();
@@ -56,6 +58,7 @@ const ProfileDetails = <T extends boolean>({
   };
 
   const viewJobs = () => {
+    fetchApplicants((user as userCompanyObject)._id);
     fetchJobs((user as userCompanyObject)._id);
   };
   const {

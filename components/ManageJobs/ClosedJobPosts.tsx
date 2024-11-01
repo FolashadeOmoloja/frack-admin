@@ -15,13 +15,12 @@ const JobPost = ({
   href: string;
   update: boolean;
 }) => {
-  const { onSubmit: deleteJob, loading, updatedJobs } = useDeleteCompanyJob();
+  const { onSubmit: deleteJob, loading } = useDeleteCompanyJob();
 
   const router = useRouter();
   const dispatch = useDispatch();
   const deleteClosedJob = () => {
     deleteJob(jobData.company._id, jobData._id);
-    dispatch(setCompanyJobs(updatedJobs));
     router.push(href);
   };
   return (

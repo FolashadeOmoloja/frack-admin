@@ -5,8 +5,9 @@ import MainTable from "../Elements/Table/MainTable";
 import {
   singleCompanyColumns,
   singleCompClosedJobsColumns,
+  successHireColumns,
 } from "@/utilities/tableData";
-import { JobPosted } from "@/utilities/typeDefs";
+import { JobPosted, SuccessApplications } from "@/utilities/typeDefs";
 import { Loader2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { FaArrowLeft } from "react-icons/fa6";
@@ -19,6 +20,10 @@ type IsActiveState = {
 const CompanyJobTable = () => {
   const filterArr = ["Active Jobs", "Closed Jobs", "Hired Talents"];
   const { companyJobs: jobs } = useSelector((store: any) => store.companyJobs);
+  const { successApplicants } = useSelector(
+    (store: any) => store.successApplicants
+  );
+  console.log("H", successApplicants);
   const { loading } = useSelector((store: any) => store.auth);
   const [active, setActive] = useState<IsActiveState>({ 0: true });
   const [changeTable, setChangeTable] = useState(0);
@@ -34,7 +39,7 @@ const CompanyJobTable = () => {
 
   const openedJobs = changeTable === 0 ? filterJobs("open") : [];
   const closedJobs = changeTable === 1 ? filterJobs("closed") : [];
-  const hiredCandidates: string | any[] = [];
+  const hiredCandidates = changeTable === 2 ? successApplicants : [];
 
   const activeFunc = (idx: number) => {
     const newState: IsActiveState = {};
@@ -46,7 +51,7 @@ const CompanyJobTable = () => {
   return (
     <section className="dashboard-container min-h-svh">
       <div
-        onClick={() => router.back()}
+        onClick={() => router.push("/control-room/manage-companies")}
         className="flex text-[#000080] gap-3 text-xl items-center font-bold mb-6 cursor-pointer"
       >
         <FaArrowLeft />
@@ -90,6 +95,19 @@ const CompanyJobTable = () => {
           <MainTable<JobPosted>
             data={closedJobs}
             columns={singleCompClosedJobsColumns}
+          />
+        )
+      ) : changeTable === 2 ? (
+        loading ? (
+          <Loader2 className=" h-14 w-14 animate-spin ml-10 mt-10 text-[#000080]" />
+        ) : hiredCandidates.length === 0 ? (
+          <p className="mt-10 text-[#000040] italic text-2xl">
+            No data available at the moment.
+          </p>
+        ) : (
+          <MainTable<SuccessApplications>
+            data={hiredCandidates}
+            columns={successHireColumns}
           />
         )
       ) : null}
